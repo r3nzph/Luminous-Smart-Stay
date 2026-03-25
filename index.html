@@ -1,0 +1,4275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luminous Smart Stay</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #fff9e8;
+      --bg-soft: #fff4d2;
+      --white: #ffffff;
+      --surface: rgba(255, 255, 255, 0.92);
+      --text: #2b1b05;
+      --muted: #7a6a45;
+
+      --primary: #8c0f2e;
+      --primary-2: #b3133e;
+      --primary-dark: #5c081d;
+
+      --gold: #d4af37;
+      --gold-2: #f7e7a8;
+
+      --shadow-sm: 0 12px 26px rgba(120, 80, 10, 0.14);
+      --shadow-md: 0 20px 46px rgba(120, 80, 10, 0.20);
+      --shadow-lg: 0 30px 80px rgba(90, 60, 10, 0.30);
+
+      --nav-height: 72px;
+      --container: 1240px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(212, 175, 55, 0.25), transparent 35%),
+        radial-gradient(circle at top right, rgba(179, 19, 62, 0.10), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(212, 175, 55, 0.18), transparent 38%),
+        linear-gradient(to bottom, #fff9e8, #fff4d2 48%, #fff0c3);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    h1, h2, h3, .brand {
+      font-family: "Playfair Display", serif;
+      letter-spacing: 0.01em;
+    }
+
+    p {
+      font-size: 16px;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 82px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 36px;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+
+    h2 {
+      font-size: clamp(1.9rem, 3vw, 2.7rem);
+      color: var(--primary);
+      line-height: 1.1;
+      font-weight: 600;
+    }
+
+    .lead {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.8;
+    }
+
+    .section-edit-wrap {
+      position: relative;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(212, 175, 55, 0.18);
+    }
+
+    .btn-primary,
+    .btn-pill {
+      background: linear-gradient(135deg, #9b7a1a, #c9a227);
+      color: #fff;
+      padding: 11px 16px;
+      border-radius: 999px;
+      font-weight: 800;
+      box-shadow: 0 8px 18px rgba(120, 80, 10, 0.14);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.96);
+      color: var(--primary);
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 800;
+      box-shadow: 0 4px 10px rgba(120, 80, 10, 0.06);
+    }
+
+    header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 1200;
+      height: var(--nav-height);
+      background: rgba(255, 251, 240, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.20);
+      box-shadow: 0 8px 24px rgba(90, 60, 10, 0.10);
+    }
+
+    .nav {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      font-size: clamp(1.1rem, 2vw, 1.45rem);
+      font-weight: 800;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      list-style: none;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      line-height: 1;
+      color: #3a302c;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: linear-gradient(135deg, rgba(212,175,55,0.24), rgba(179,19,62,0.12));
+      color: var(--primary);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+
+    .brand,
+    .phone,
+    .nav-right .btn,
+    .nav-right button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      user-select: none;
+      -webkit-user-select: none;
+      white-space: nowrap;
+    }
+
+    .phone {
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+      font-size: 0.95rem;
+    }
+
+    .section-gear {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 40;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--primary));
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .room-card-gear,
+    .activity-card-gear {
+      top: 12px;
+      right: 12px;
+      width: 38px;
+      height: 38px;
+      font-size: 0.95rem;
+      position: absolute;
+      z-index: 20;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--primary));
+      color: #fff;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .admin-section-badge {
+      position: absolute;
+      top: -14px;
+      left: 10px;
+      z-index: 60;
+      background: linear-gradient(135deg, var(--primary), #b3133e);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      padding: 7px 10px;
+      border-radius: 999px;
+      box-shadow: var(--shadow-sm);
+      display: none;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    body.admin-enabled .admin-launcher {
+      display: block;
+    }
+
+    body.edit-mode .section-gear,
+    body.edit-mode .room-card-gear,
+    body.edit-mode .activity-card-gear {
+      display: inline-flex;
+    }
+
+    body.edit-mode .admin-section-badge {
+      display: inline-flex;
+    }
+
+    body.edit-mode [data-admin-section] {
+      position: relative;
+      outline: 2px dashed rgba(140, 15, 46, 0.30);
+      outline-offset: 8px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    body.edit-mode [data-admin-section]:hover {
+      outline-color: rgba(212, 175, 55, 0.95);
+      box-shadow: 0 0 0 10px rgba(212, 175, 55, 0.08);
+    }
+
+    .admin-launcher {
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      z-index: 1800;
+      display: none;
+    }
+
+    .admin-launcher-stack {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .admin-launcher-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 18px;
+      background: linear-gradient(135deg, var(--primary), var(--gold));
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .admin-section-toast {
+      position: fixed;
+      left: 18px;
+      bottom: 78px;
+      z-index: 1800;
+      background: rgba(26,22,20,0.94);
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .admin-panel {
+      position: fixed;
+      top: 0;
+      right: -470px;
+      width: min(470px, 100%);
+      height: 100vh;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(18px);
+      z-index: 1900;
+      box-shadow: -18px 0 60px rgba(0,0,0,0.18);
+      border-left: 1px solid rgba(212,175,55,0.20);
+      transition: right 0.28s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-panel.open {
+      right: 0;
+    }
+
+    .admin-panel-header {
+      padding: 20px 18px 14px;
+      border-bottom: 1px solid rgba(212,175,55,0.14);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .admin-panel-kicker {
+      font-size: 0.74rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .admin-panel-header h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+    }
+
+    .admin-panel-header p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .admin-panel-body {
+      padding: 16px;
+      overflow: auto;
+      flex: 1;
+    }
+
+    .admin-empty-state {
+      border: 1px dashed rgba(212,175,55,0.35);
+      border-radius: 18px;
+      padding: 18px;
+      color: var(--muted);
+      background: #fffaf0;
+      font-weight: 600;
+    }
+
+    .admin-panel-actions-top {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .editor-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .editor-card {
+      border: 1px solid rgba(212,175,55,0.18);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fffdf7, #fff8ea);
+      padding: 14px;
+      box-shadow: 0 6px 14px rgba(120,80,10,0.06);
+    }
+
+    .editor-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .editor-card-head strong {
+      color: var(--primary);
+      font-size: 0.95rem;
+    }
+
+    .editor-remove-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 10px;
+      background: #fde2df;
+      color: #a22820;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .editor-field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .editor-field label,
+    .field label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 800;
+      color: #7a5a16;
+    }
+
+    .editor-field input,
+    .editor-field textarea {
+      width: 100%;
+      border: 1px solid rgba(212,175,55,0.16);
+      background: #fff;
+      color: #1d1b1a;
+      border-radius: 12px;
+      min-height: 44px;
+      padding: 12px 13px;
+      outline: none;
+    }
+
+    .editor-field textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: calc(var(--nav-height) + 18px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(100deg, rgba(42, 20, 4, 0.55), rgba(42, 20, 4, 0.18) 46%, rgba(92, 8, 29, 0.42)),
+        url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=80") center center / cover no-repeat;
+      transform: scale(1.01);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(247,231,168,0.30), transparent 66%);
+      filter: blur(12px);
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 24px;
+      align-items: center;
+      padding: 40px 28px 36px 28px;
+    }
+
+    .hero-copy {
+      color: white;
+      max-width: 680px;
+      padding-left: 18px;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(2.1rem, 4.8vw, 4.2rem);
+      line-height: 1.04;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 10px 24px rgba(0,0,0,0.22);
+      margin-bottom: 14px;
+      max-width: 640px;
+      opacity: 0;
+      transform: translateY(22px);
+      animation: fadeUp 0.9s ease 0.1s forwards;
+    }
+
+    .hero-copy p {
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 22px;
+      max-width: 560px;
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s ease 0.2s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      padding-left: 2px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s ease 0.32s forwards;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-left: 2px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s ease 0.45s forwards;
+    }
+
+    .hero-stat {
+      min-width: 118px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(247,231,168,0.24);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 24px rgba(90, 60, 10, 0.12);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 1.02rem;
+      margin-bottom: 2px;
+      color: #fff;
+    }
+
+    .hero-stat span {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .booking-card {
+      background: linear-gradient(180deg, rgba(212,175,55,0.30), rgba(92,8,29,0.22));
+      border: 1px solid rgba(247,231,168,0.26);
+      backdrop-filter: blur(14px);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: var(--shadow-lg);
+      color: #fff;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.95s ease 0.55s forwards;
+    }
+
+    .booking-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .booking-card p {
+      color: rgba(255,255,255,0.84);
+      margin-bottom: 14px;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .booking-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field input,
+    .field select,
+    .input {
+      width: 100%;
+      border: 1px solid rgba(212,175,55,0.16);
+      background: rgba(255,255,255,0.97);
+      color: #1d1b1a;
+      min-height: 46px;
+      padding: 0 13px;
+      border-radius: 13px;
+      outline: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .section-surface {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.60), rgba(255,255,255,0.46)),
+        linear-gradient(to bottom, rgba(212,175,55,0.08), rgba(179,19,62,0.03));
+      border-top: 1px solid rgba(255,255,255,0.45);
+      border-bottom: 1px solid rgba(111, 60, 40, 0.05);
+      backdrop-filter: blur(8px);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .about-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,248,230,0.88));
+      border: 1px solid rgba(212,175,55,0.20);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .showcase {
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      min-height: 460px;
+      background: #ddd;
+    }
+
+    .showcase img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .showcase-badge {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      color: white;
+      background: rgba(34,15,16,0.60);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(247,231,168,0.20);
+      max-width: 360px;
+      font-size: 0.94rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #ffffff, #fff8e6);
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(212,175,55,0.25);
+      box-shadow: var(--shadow-sm);
+      transition: 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-media {
+      position: relative;
+      height: 190px;
+      overflow: hidden;
+    }
+
+    .card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .card:hover .card-media img {
+      transform: scale(1.04);
+    }
+
+    .tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,244,210,0.98));
+      color: var(--primary);
+      border: 1px solid rgba(212,175,55,0.18);
+      font-size: 0.72rem;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 7px 10px;
+      letter-spacing: 0.03em;
+      box-shadow: 0 6px 16px rgba(120, 80, 10, 0.10);
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card h3 {
+      color: var(--primary);
+      font-size: 1.15rem;
+      line-height: 1.2;
+    }
+
+    .price {
+      white-space: normal;
+      font-weight: 800;
+      color: #b48a1e;
+      background: linear-gradient(135deg, rgba(212,175,55,0.25), rgba(140,15,46,0.12));
+      padding: 6px 10px;
+      border-radius: 999px;
+      line-height: 1.2;
+      font-size: 0.84rem;
+      border: 1px solid rgba(212,175,55,0.16);
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.93rem;
+    }
+
+    .room-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 16px;
+    }
+
+    .pill {
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.22), rgba(179,19,62,0.08));
+      color: #5c3b11;
+      font-size: 0.76rem;
+      font-weight: 700;
+      border: 1px solid rgba(212,175,55,0.12);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .card-actions .btn-primary,
+    .card-actions .btn-secondary {
+      font-size: 0.86rem;
+      padding: 9px 13px;
+    }
+
+    .view-more-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .hidden-room {
+      display: none;
+    }
+
+    .promo-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+    }
+
+    .promo-main,
+    .promo-side {
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      min-height: 290px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .promo-main img,
+    .promo-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .promo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(18,12,10,0.06), rgba(18,12,10,0.72));
+      color: white;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      gap: 10px;
+    }
+
+    .promo-overlay h3 {
+      font-size: 1.7rem;
+      line-height: 1.08;
+    }
+
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .activity-card {
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(212,175,55,0.18);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: 0.25s ease;
+    }
+
+    .activity-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .activity-card-media {
+      position: relative;
+    }
+
+    .activity-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .activity-card .body {
+      padding: 16px;
+    }
+
+    .activity-card h3 {
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-size: 1.08rem;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .testimonial {
+      background: rgba(255,255,255,0.94);
+      padding: 20px;
+      border-radius: 22px;
+      border: 1px solid rgba(212,175,55,0.18);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stars {
+      color: var(--gold);
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .testimonial p {
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-size: 0.94rem;
+    }
+
+    .testimonial strong {
+      color: var(--primary);
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, #5c081d 0%, #8c0f2e 38%, #d4af37 100%);
+      color: white;
+      border-radius: 26px;
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .contact-box .eyebrow {
+      color: #f7e7a8;
+    }
+
+    .contact-box .eyebrow::before {
+      background: linear-gradient(to right, #f7e7a8, transparent);
+    }
+
+    .contact-box p {
+      color: rgba(255,255,255,0.84);
+      max-width: 680px;
+      font-size: 0.96rem;
+    }
+
+    .contact-actions {
+      display: flex;
+      justify-content: end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      text-align: center;
+      padding: 22px;
+      background: linear-gradient(135deg, #5c081d 0%, #8c0f2e 38%, #d4af37 100%);
+      color: #fff3d0;
+      font-weight: 800;
+      margin-top: 24px;
+      font-size: 0.92rem;
+    }
+
+    .user-menu {
+      position: relative;
+      display: none;
+    }
+
+    .user-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(212,175,55,0.18);
+      background: rgba(255,255,255,0.92);
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 7px 10px 7px 7px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(120, 80, 10, 0.08);
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--gold), var(--primary));
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 240px;
+      background: rgba(255,255,255,0.98);
+      border: 1px solid rgba(212,175,55,0.16);
+      border-radius: 18px;
+      padding: 10px;
+      box-shadow: var(--shadow-md);
+      display: none;
+      z-index: 100;
+    }
+
+    .dropdown button,
+    .dropdown a {
+      width: 100%;
+      display: block;
+      text-align: left;
+      background: transparent;
+      color: #2d2724;
+      border: none;
+      padding: 12px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .dropdown button:hover,
+    .dropdown a:hover {
+      background: rgba(212,175,55,0.14);
+      color: var(--primary);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,12,10,0.56);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 1400;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(980px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(16px);
+      border-radius: 24px;
+      border: 1px solid rgba(212,175,55,0.14);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-head {
+      padding: 20px 22px 10px;
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .modal-head h3 {
+      color: var(--primary);
+      font-size: 1.55rem;
+    }
+
+    .modal-body {
+      padding: 0 22px 22px;
+    }
+
+    .close-x {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(212,175,55,0.12);
+      color: var(--primary);
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 11px 13px;
+      border-radius: 13px;
+      border: 1px solid rgba(212,175,55,0.16);
+      background: #fff8e9;
+      color: var(--primary);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .auth-tab.active {
+      background: linear-gradient(135deg, var(--gold), var(--primary));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .auth-pane {
+      display: grid;
+      gap: 10px;
+    }
+
+    .google-btn {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(212,175,55,0.16);
+      background: #fff;
+      color: #1d1b1a;
+      border-radius: 13px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .auth-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .room-modal-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .room-modal-card {
+      max-width: 980px;
+    }
+
+    .room-gallery-wrap {
+      display: grid;
+      gap: 12px;
+    }
+
+    .room-gallery-stage {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      background: rgba(20, 6, 11, 0.96);
+      border: 1px solid rgba(212,175,55,0.18);
+      box-shadow: var(--shadow-md);
+      min-height: 340px;
+    }
+
+    .room-gallery-main {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      display: block;
+      border-radius: 22px;
+      cursor: zoom-in;
+      user-select: none;
+      -webkit-user-drag: none;
+      touch-action: pan-y;
+      transition: transform 0.28s ease, filter 0.28s ease;
+    }
+
+    .room-gallery-stage:hover .room-gallery-main {
+      filter: saturate(1.03);
+    }
+
+    .room-gallery-nav,
+    .room-gallery-icon-btn {
+      position: absolute;
+      z-index: 3;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff7ea;
+      background: rgba(36, 10, 18, 0.74);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(212,175,55,0.22);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .room-gallery-nav:hover,
+    .room-gallery-icon-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(68, 16, 29, 0.92);
+    }
+
+    .room-gallery-nav {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      font-size: 1.5rem;
+    }
+
+    .room-gallery-nav.prev { left: 14px; }
+    .room-gallery-nav.next { right: 14px; }
+
+    .room-gallery-icon-btn {
+      top: 14px;
+      width: 40px;
+      height: 40px;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .room-gallery-icon-btn.zoom { right: 14px; }
+    .room-gallery-icon-btn.slideshow { right: 62px; }
+
+    .room-gallery-icon-btn.is-playing,
+    .room-fullscreen-btn.is-playing {
+      background: linear-gradient(135deg, rgba(140,15,46,0.95), rgba(212,175,55,0.92));
+      color: #fff;
+    }
+
+    .room-gallery-counter {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      z-index: 3;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(17, 6, 10, 0.82);
+      color: #fff2d5;
+      font-weight: 800;
+      font-size: 0.82rem;
+      border: 1px solid rgba(212,175,55,0.18);
+    }
+
+    .room-gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .room-gallery-thumb {
+      width: 100%;
+      height: 86px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+      opacity: 0.92;
+      background: rgba(255,255,255,0.7);
+    }
+
+    .room-gallery-thumb:hover,
+    .room-gallery-thumb.active {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+      opacity: 1;
+      filter: saturate(1.05);
+    }
+
+    .room-gallery-hint {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.62);
+      padding-left: 2px;
+    }
+
+    .room-details-list {
+      display: grid;
+      gap: 9px;
+      margin: 14px 0 18px;
+      max-height: 380px;
+      overflow: auto;
+      padding-right: 6px;
+    }
+
+    .room-details-list li {
+      list-style: none;
+      padding: 11px 13px;
+      border-radius: 13px;
+      background: rgba(212,175,55,0.12);
+      color: #4b3320;
+      font-weight: 700;
+      font-size: 0.92rem;
+      border: 1px solid rgba(212,175,55,0.12);
+    }
+
+    .room-fullscreen-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2600;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(4, 2, 3, 0.94);
+      padding: 24px;
+    }
+
+    .room-fullscreen-modal.active {
+      display: flex;
+    }
+
+    .room-fullscreen-stage {
+      width: min(1100px, calc(100vw - 120px));
+      display: grid;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .room-fullscreen-toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      color: #fff1cf;
+      font-weight: 800;
+    }
+
+    .room-fullscreen-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .room-fullscreen-btn,
+    .room-fullscreen-counter {
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.20);
+      background: rgba(32, 10, 18, 0.78);
+      color: #fff3dc;
+      padding: 8px 12px;
+      font-weight: 800;
+    }
+
+    .room-fullscreen-btn {
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .room-fullscreen-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(68, 16, 29, 0.92);
+    }
+
+    .room-fullscreen-image {
+      width: 100%;
+      max-height: 72vh;
+      object-fit: contain;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.34);
+      transition: transform 0.24s ease;
+      cursor: zoom-in;
+      user-select: none;
+      -webkit-user-drag: none;
+      touch-action: pan-y;
+    }
+
+    .room-fullscreen-image.zoomed {
+      transform: scale(1.55);
+      cursor: zoom-out;
+    }
+
+    .room-fullscreen-thumbs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .room-fullscreen-thumbs img {
+      width: 88px;
+      height: 68px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      opacity: 0.88;
+      flex: 0 0 auto;
+    }
+
+    .room-fullscreen-thumbs img.active {
+      border-color: var(--gold);
+      opacity: 1;
+    }
+
+    .room-fullscreen-nav,
+    .room-fullscreen-close {
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      color: #fff8ea;
+      background: rgba(32, 10, 18, 0.82);
+      border: 1px solid rgba(212,175,55,0.24);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .room-fullscreen-nav:hover,
+    .room-fullscreen-close:hover {
+      transform: translateY(-1px);
+      background: rgba(68, 16, 29, 0.94);
+    }
+
+    .room-fullscreen-nav {
+      width: 50px;
+      height: 50px;
+      font-size: 1.7rem;
+      flex: 0 0 auto;
+    }
+
+    .room-fullscreen-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 46px;
+      height: 46px;
+      font-size: 1.35rem;
+      z-index: 3;
+    }
+
+    @media (max-width: 900px) {
+      .room-modal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .room-fullscreen-stage {
+        width: min(100%, calc(100vw - 40px));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .room-gallery-main {
+        height: 260px;
+      }
+
+      .room-gallery-thumb {
+        height: 72px;
+      }
+
+      .room-gallery-nav {
+        width: 40px;
+        height: 40px;
+      }
+
+      .room-gallery-icon-btn.slideshow { right: 58px; }
+
+      .room-fullscreen-modal {
+        padding: 16px;
+      }
+
+      .room-fullscreen-stage {
+        width: 100%;
+      }
+
+      .room-fullscreen-nav {
+        display: none;
+      }
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    th, td {
+      padding: 13px;
+      text-align: left;
+      border-bottom: 1px solid rgba(212,175,55,0.08);
+      font-size: 0.93rem;
+    }
+
+    th {
+      color: var(--primary);
+      background: #fff8eb;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: capitalize;
+    }
+
+    .status.pending {
+      background: #fff5d8;
+      color: #8d6500;
+    }
+
+    .status.approved {
+      background: #dcf7e7;
+      color: #106338;
+    }
+
+    .status.completed {
+      background: #e8eefc;
+      color: #214ea3;
+    }
+
+    .status.cancelled {
+      background: #fde2df;
+      color: #a22820;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 1600;
+      background: rgba(26,22,20,0.95);
+      color: #fff;
+      padding: 13px 15px;
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+      display: none;
+      min-width: 220px;
+      font-size: 0.92rem;
+    }
+
+    .toast.show {
+      display: block;
+      animation: fadeUp 0.25s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .card-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .about-grid,
+      .promo-grid,
+      .contact-box,
+      .room-modal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .room-gallery-main {
+        height: 320px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-bottom: 32px;
+      }
+
+      .hero-grid {
+        padding: 36px 24px 30px 24px;
+      }
+
+      .hero-copy {
+        padding-left: 6px;
+        max-width: 100%;
+      }
+
+      .hero-copy h1 {
+        max-width: 700px;
+      }
+
+      .hero-copy p {
+        max-width: 620px;
+      }
+
+      .booking-card {
+        max-width: 520px;
+      }
+
+      .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .activity-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-actions {
+        justify-content: start;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav-links {
+        display: none;
+      }
+
+      .phone {
+        display: none;
+      }
+
+      .section {
+        padding: 70px 0;
+      }
+
+      .card-grid,
+      .activity-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(var(--container), calc(100% - 20px));
+      }
+
+      .hero-grid {
+        padding: 28px 16px 24px 16px;
+      }
+
+      .hero-copy {
+        padding-left: 0;
+      }
+
+      .hero-copy h1 {
+        font-size: clamp(1.9rem, 9vw, 3rem);
+      }
+
+      .hero-copy p {
+        font-size: 0.95rem;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .showcase {
+        min-height: 340px;
+      }
+
+      .modal-head,
+      .modal-body {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .admin-panel {
+        width: 100%;
+      }
+    }
+  
+
+    /* ===============================
+       GOLD + DEEP RED LUXURY THEME OVERRIDES
+       =============================== */
+    :root {
+      --bg: #120608;
+      --bg-soft: #1a090d;
+      --white: #fff8ef;
+      --surface: rgba(20, 8, 11, 0.94);
+      --text: #f4e5c4;
+      --muted: #d6bd92;
+
+      --primary: #8c0f2e;
+      --primary-2: #b3133e;
+      --primary-dark: #4d081a;
+
+      --gold: #d4af37;
+      --gold-2: #f3d88b;
+
+      --shadow-sm: 0 12px 30px rgba(0, 0, 0, 0.28);
+      --shadow-md: 0 24px 56px rgba(0, 0, 0, 0.38);
+      --shadow-lg: 0 34px 90px rgba(0, 0, 0, 0.52);
+    }
+
+    body {
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 18%, rgba(212, 175, 55, 0.13), transparent 23%),
+        radial-gradient(circle at 86% 14%, rgba(179, 19, 62, 0.14), transparent 21%),
+        radial-gradient(circle at 70% 78%, rgba(212, 175, 55, 0.08), transparent 26%),
+        linear-gradient(180deg, rgba(8,3,4,0.88), rgba(8,3,4,0.88)),
+        url("https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1600&q=80") center/cover fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(8,3,4,0.34), rgba(8,3,4,0.16) 20%, rgba(8,3,4,0.34) 100%),
+        radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.14) 100%);
+      z-index: -1;
+    }
+
+    .section-surface {
+      background:
+        linear-gradient(180deg, rgba(24, 9, 13, 0.86), rgba(14, 5, 8, 0.92)),
+        linear-gradient(135deg, rgba(212,175,55,0.06), rgba(179,19,62,0.08));
+      border-top: 1px solid rgba(212, 175, 55, 0.10);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+      backdrop-filter: blur(8px);
+    }
+
+    h2,
+    .card h3,
+    .activity-card h3,
+    .testimonial strong,
+    .modal-head h3,
+    .brand {
+      color: var(--gold-2);
+    }
+
+    .lead,
+    .muted,
+    .booking-card p,
+    .testimonial p,
+    .contact-box p,
+    .activity-card .body p,
+    .card-body .muted,
+    .about-card p,
+    #roomModalDesc,
+    #activityDesc {
+      color: var(--muted);
+    }
+
+    header {
+      background: linear-gradient(180deg, rgba(14, 5, 8, 0.97), rgba(9, 3, 5, 0.96));
+      border-bottom: 1px solid rgba(212, 175, 55, 0.16);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.38);
+    }
+
+    .nav-links a {
+      color: #f0d7a2;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: linear-gradient(135deg, rgba(212,175,55,0.16), rgba(179,19,62,0.32));
+      color: #ffe8b0;
+    }
+
+    .phone {
+      color: var(--gold-2);
+    }
+
+    .btn-primary,
+    .btn-pill {
+      background: linear-gradient(135deg, #7a0d27 0%, #b3133e 52%, #d4af37 100%);
+      color: #fff7ea;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.04);
+      color: #f0d7a2;
+      border: 1px solid rgba(212,175,55,0.20);
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(212,175,55,0.10);
+      color: #fff0c0;
+    }
+
+    .about-card,
+    .card,
+    .activity-card,
+    .testimonial,
+    .editor-card,
+    .table-wrap,
+    .user-trigger,
+    .dropdown {
+      background: linear-gradient(180deg, rgba(27, 10, 14, 0.98), rgba(14, 5, 8, 0.98));
+      border: 1px solid rgba(212,175,55,0.16);
+      box-shadow: var(--shadow-md);
+      color: var(--text);
+    }
+
+    .showcase {
+      border: 1px solid rgba(212,175,55,0.12);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .showcase-badge {
+      background: linear-gradient(180deg, rgba(24,12,16,0.84), rgba(74,50,57,0.74));
+      border: 1px solid rgba(243,216,139,0.16);
+      color: #fff6e6;
+    }
+
+    .tag {
+      background: linear-gradient(135deg, rgba(20,8,11,0.94), rgba(61,17,27,0.92));
+      color: var(--gold-2);
+      border: 1px solid rgba(212,175,55,0.16);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    }
+
+    .price,
+    .pill {
+      background: linear-gradient(135deg, rgba(212,175,55,0.12), rgba(179,19,62,0.24));
+      color: #f5dfaa;
+      border: 1px solid rgba(212,175,55,0.14);
+    }
+
+    .promo-main,
+    .promo-side {
+      border: 1px solid rgba(212,175,55,0.14);
+      box-shadow: var(--shadow-md);
+    }
+
+    .promo-overlay {
+      background: linear-gradient(180deg, rgba(8,4,5,0.12), rgba(8,4,5,0.84));
+      color: #fff6e8;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, #22090e 0%, #7a0d27 42%, #d4af37 100%);
+      color: #fff6e8;
+    }
+
+    .booking-card {
+      background: linear-gradient(180deg, rgba(33, 11, 16, 0.88), rgba(14, 5, 8, 0.94));
+      border: 1px solid rgba(212,175,55,0.18);
+      color: var(--text);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .field input,
+    .field select,
+    .input,
+    .editor-field input,
+    .editor-field textarea,
+    textarea,
+    select,
+    input {
+      background: rgba(255,255,255,0.06);
+      color: #f5e7ca;
+      border: 1px solid rgba(212,175,55,0.14);
+      box-shadow: none;
+    }
+
+    .field input::placeholder,
+    .input::placeholder,
+    .editor-field textarea::placeholder,
+    .editor-field input::placeholder,
+    textarea::placeholder,
+    input::placeholder {
+      color: rgba(245, 231, 202, 0.58);
+    }
+
+    .field label,
+    .editor-field label,
+    th {
+      color: var(--gold-2);
+    }
+
+    td {
+      border-bottom: 1px solid rgba(212,175,55,0.08);
+      color: var(--text);
+    }
+
+    .dropdown button,
+    .dropdown a {
+      color: var(--text);
+    }
+
+    .dropdown button:hover,
+    .dropdown a:hover {
+      background: rgba(212,175,55,0.08);
+      color: var(--gold-2);
+    }
+
+    .modal {
+      background: rgba(4, 1, 2, 0.78);
+    }
+
+    .modal-card {
+      background: linear-gradient(180deg, rgba(25, 9, 13, 0.99), rgba(11, 4, 6, 0.99));
+      border: 1px solid rgba(212,175,55,0.18);
+      box-shadow: var(--shadow-lg);
+      color: var(--text);
+    }
+
+    .close-x {
+      background: rgba(212,175,55,0.10);
+      color: var(--gold-2);
+      border: 1px solid rgba(212,175,55,0.12);
+    }
+
+    .auth-tab,
+    .google-btn {
+      background: rgba(255,255,255,0.05);
+      color: var(--gold-2);
+      border: 1px solid rgba(212,175,55,0.14);
+    }
+
+    .auth-tab.active {
+      background: linear-gradient(135deg, #7a0d27 0%, #b3133e 55%, #d4af37 100%);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .room-modal-grid img {
+      border: 1px solid rgba(212,175,55,0.14);
+      box-shadow: var(--shadow-md);
+    }
+
+    .room-details-list li {
+      background: linear-gradient(135deg, rgba(212,175,55,0.10), rgba(179,19,62,0.22));
+      color: #f3ddb0;
+      border: 1px solid rgba(212,175,55,0.12);
+    }
+
+    .admin-panel {
+      background: linear-gradient(180deg, rgba(18,7,10,0.98), rgba(10,4,6,0.98));
+      border-left: 1px solid rgba(212,175,55,0.14);
+    }
+
+    .admin-panel-kicker,
+    .eyebrow {
+      color: var(--gold);
+    }
+
+    .eyebrow::before,
+    .contact-box .eyebrow::before {
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+
+    footer {
+      background: linear-gradient(135deg, #120609 0%, #5c081d 46%, #d4af37 100%);
+      color: #fff2d0;
+    }
+
+    .modal-card::-webkit-scrollbar,
+    .admin-panel-body::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .modal-card::-webkit-scrollbar-track,
+    .admin-panel-body::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .modal-card::-webkit-scrollbar-thumb,
+    .admin-panel-body::-webkit-scrollbar-thumb {
+      background: rgba(212,175,55,0.28);
+      border-radius: 999px;
+    }
+
+    @media (max-width: 900px) {
+      .about-card,
+      .card,
+      .activity-card,
+      .testimonial,
+      .modal-card {
+        border-radius: 20px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="#home" class="brand">Luminous Smart Stay</a>
+
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#rooms">Rooms</a></li>
+        <li><a href="#offers">Offers</a></li>
+        <li><a href="#activities">Activities</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <span class="phone">+63 948 017 2680</span>
+        <button id="loginBtn" class="btn btn-secondary" onclick="openAuthModal()">Login / Register</button>
+
+        <div id="userMenuWrap" class="user-menu">
+          <button id="userMenuBtn" class="user-trigger" type="button">
+            <span id="userAvatar" class="avatar">U</span>
+            <span id="userFirstName">User</span>
+          </button>
+
+          <div id="userDropdown" class="dropdown">
+            <button id="pendingBtn" type="button">Pending Bookings</button>
+            <button id="historyBtn" type="button">Booking History</button>
+            <a href="reservation.html" id="reserveNowLink">Reserve Now</a>
+            <a href="admin-dashboard.html" id="adminDashboardLink" style="display:none;">Admin Dashboard</a>
+            <button id="logoutBtn" type="button">Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section-edit-wrap" id="home" data-admin-section="home" data-admin-label="Hero Section">
+      <span class="admin-section-badge">✏ Hero</span>
+
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="homeTitle">Welcome to Luminous Smart Stay</h1>
+          <p id="homeSubtitle">Where Ocean Serenity Meets City Brilliance</p>
+
+          <div class="hero-actions">
+            <a href="reservation.html" id="homeBtn1" class="btn btn-primary">Book Your Stay</a>
+            <a href="#rooms" id="homeBtn2" class="btn btn-secondary">Explore Rooms</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <strong id="homeStat1Title">5-Star</strong>
+              <span id="homeStat1Text">Luxury Experience</span>
+            </div>
+            <div class="hero-stat">
+              <strong id="homeStat2Title">360°</strong>
+              <span id="homeStat2Text">Sky Dining</span>
+            </div>
+            <div class="hero-stat">
+              <strong id="homeStat3Title">24/7</strong>
+              <span id="homeStat3Text">Guest Service</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="booking-card">
+          <h3 id="bookingCardTitle">Quick Booking</h3>
+          <p id="bookingCardText">Choose your dates and go straight to reservation with a smoother guest experience.</p>
+
+          <form class="booking-form" id="quickBookingForm">
+            <div class="field">
+              <label for="checkIn">Check In</label>
+              <input id="checkIn" type="date" required>
+            </div>
+
+            <div class="field">
+              <label for="checkOut">Check Out</label>
+              <input id="checkOut" type="date" required>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="guestCount">Guests</label>
+                <select id="guestCount">
+                  <option>1 Guest</option>
+                  <option>2 Guests</option>
+                  <option>3 Guests</option>
+                  <option>4 Guests</option>
+                  <option>5 Guests</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="roomTypeSelect">Room Type</label>
+                <select id="roomTypeSelect">
+                  <option>Luminous Solo Studio</option>
+                  <option>Deluxe Ocean View Room</option>
+                  <option>Premier City Lights Room</option>
+                  <option>Grand Balcony Room</option>
+                  <option>Luminous Family Suite</option>
+                  <option>Prestige Terrace Suite with Private Jacuzzi</option>
+                  <option>Luminous Royal Duplex Suite</option>
+                  <option>Luminous Presidential Royal Suite</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" id="bookingCardBtn" class="btn btn-pill">Check Availability</button>
+          </form>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-surface section-edit-wrap" id="about" data-admin-section="about" data-admin-label="About Section">
+      <span class="admin-section-badge">✏ About</span>
+
+      <div class="container about-grid">
+        <div class="about-card">
+          <div class="eyebrow" id="aboutEyebrow">About Us</div>
+          <h2 id="aboutTitle">An illuminated destination of prestige, warmth, and breathtaking views.</h2>
+
+          <div id="aboutParagraphsWrap">
+            <p class="lead">A symbol of timeless elegance rising between the calming ocean horizon and the dazzling city skyline. Inspired by modern European luxury and refined hospitality, our hotel blends sophistication, comfort, and breathtaking views into one unforgettable experience.</p>
+            <p class="lead">Located in a prime destination, Luminous Smart Stay offers panoramic ocean views at the back and spectacular city lights at the front — giving our guests the best of both worlds. Our signature red and gold interiors represent passion, prestige, and warmth, ensuring every stay feels exclusive yet welcoming.</p>
+            <p class="lead">Whether you are traveling for leisure, business, romance, or celebration, Luminous Smart Stay is designed to provide a seamless and luxurious escape. From our rooftop infinity pool to our 360° Sky Restaurant, every detail reflects our commitment to excellence.</p>
+            <p class="lead">At Luminous Smart Stay, we don’t just offer rooms — we create illuminated experiences.</p>
+          </div>
+        </div>
+
+        <div class="showcase">
+          <img id="aboutImage" src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80" alt="Luxury hotel exterior">
+          <div class="showcase-badge">
+            <strong id="aboutBadgeTitle">Luminous Smart Stay</strong>
+            <div id="aboutBadgeText">Where ocean calm and city brilliance meet in one refined luxury escape.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-edit-wrap" id="rooms" data-admin-section="roomsHeader" data-admin-label="Rooms Section Header">
+      <span class="admin-section-badge">✏ Rooms Header</span>
+
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow" id="roomsEyebrow">Featured Rooms</div>
+            <h2 id="roomsTitle">Choose your signature stay.</h2>
+          </div>
+        </div>
+
+        <div class="card-grid" id="featuredRoomsGrid">
+          <article class="card">
+            <div class="card-media">
+              <button class="room-card-gear" type="button" onclick="openRoomEditor('solo')">⚙</button>
+              <span id="soloCardTag" class="tag">Popular</span>
+              <img id="soloCardImage" src="https://i.pinimg.com/736x/9b/83/08/9b8308f3136e9ca741bcd80738ab6559.jpg" alt="Solo Studio">
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 id="soloCardTitle">Luminous Solo Studio</h3>
+                <div id="soloCardPrice" class="price">₱6,800 / night</div>
+              </div>
+              <p id="soloCardDesc" class="muted">A modern, cozy single-occupancy room designed for comfort and elegance. Warm red and gold accents reflect the Luminous brand identity.</p>
+              <div class="room-meta">
+                <span id="soloCardMeta1" class="pill">2 Guests</span>
+                <span id="soloCardMeta2" class="pill">King Bed</span>
+                <span id="soloCardMeta3" class="pill">City View</span>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="openRoomModal('solo')">View Details</button>
+                <a href="reservation.html" class="btn btn-secondary">Book Now</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <button class="room-card-gear" type="button" onclick="openRoomEditor('premier')">⚙</button>
+              <span id="premierCardTag" class="tag">Couple Favorite</span>
+              <img id="premierCardImage" src="https://i.pinimg.com/736x/6a/74/7f/6a747f1dae3337e9fcceed2639f25d40.jpg" alt="Premier Room">
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 id="premierCardTitle">Deluxe Ocean View Room</h3>
+                <div id="premierCardPrice" class="price">₱9,800 / night</div>
+              </div>
+              <p id="premierCardDesc" class="muted">Enjoy calming ocean views from the back-facing window. Designed with floor-to-ceiling glass panels to maximize natural light.</p>
+              <div class="room-meta">
+                <span id="premierCardMeta1" class="pill">2 Guests</span>
+                <span id="premierCardMeta2" class="pill">Premium Bath</span>
+                <span id="premierCardMeta3" class="pill">Mini Bar</span>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="openRoomModal('premier')">View Details</button>
+                <a href="reservation.html" class="btn btn-secondary">Book Now</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <button class="room-card-gear" type="button" onclick="openRoomEditor('executive')">⚙</button>
+              <span id="executiveCardTag" class="tag">Business Luxury</span>
+              <img id="executiveCardImage" src="https://i.pinimg.com/736x/34/17/b0/3417b0d75c1830f95114bb80cf9647bb.jpg" alt="Executive Suite">
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 id="executiveCardTitle">Premier City Lights Room</h3>
+                <div id="executiveCardPrice" class="price">₱10,500 / night</div>
+              </div>
+              <p id="executiveCardDesc" class="muted">Front-facing room overlooking the glowing city lights at night. Romantic and vibrant ambiance.</p>
+              <div class="room-meta">
+                <span id="executiveCardMeta1" class="pill">3 Guests</span>
+                <span id="executiveCardMeta2" class="pill">Lounge Area</span>
+                <span id="executiveCardMeta3" class="pill">Bathtub</span>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="openRoomModal('executive')">View Details</button>
+                <a href="reservation.html" class="btn btn-secondary">Book Now</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <button class="room-card-gear" type="button" onclick="openRoomEditor('family')">⚙</button>
+              <span id="familyCardTag" class="tag">Family Pick</span>
+              <img id="familyCardImage" src="https://i.pinimg.com/736x/09/0b/45/090b45ddbce8e2707af31e056a79e620.jpg" alt="Family Suite">
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 id="familyCardTitle">Grand Balcony Room</h3>
+                <div id="familyCardPrice" class="price">₱14,500 / night</div>
+              </div>
+              <p id="familyCardDesc" class="muted">Private balcony with your choice of Ocean View (back side) or City Lights View (front side).</p>
+              <div class="room-meta">
+                <span id="familyCardMeta1" class="pill">5 Guests</span>
+                <span id="familyCardMeta2" class="pill">2 Beds</span>
+                <span id="familyCardMeta3" class="pill">Lounge</span>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="openRoomModal('family')">View Details</button>
+                <a href="reservation.html" class="btn btn-secondary">Book Now</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card hidden-room extra-room">
+            <div class="card-media">
+              <button class="room-card-gear" type="button" onclick="openRoomEditor('royal')">⚙</button>
+              <span id="royalCardTag" class="tag">VIP Choice</span>
+              <img id="royalCardImage" src="https://i.pinimg.com/736x/b5/42/19/b54219cd6529a5fce63fc76a2c0a31d0.jpg" alt="Royal Suite">
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 id="royalCardTitle">Luminous Family Suite</h3>
+                <div id="royalCardPrice" class="price">₱22,000 / night</div>
+              </div>
+              <p id="royalCardDesc" class="muted">Two connected rooms with shared entry. Spacious and comfortable for up to 6 guests.(front side).</p>
+              <div class="room-meta">
+                <span id="royalCardMeta1" class="pill">4 Guests</span>
+                <span id="royalCardMeta2" class="pill">Private Lounge</span>
+                <span id="royalCardMeta3" class="pill">Luxury Bath</span>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="openRoomModal('royal')">View Details</button>
+                <a href="reservation.html" class="btn btn-secondary">Book Now</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card hidden-room extra-room">
+            <div class="card-media">
+              <button class="room-card-gear" type="button" onclick="openRoomEditor('presidential')">⚙</button>
+              <span id="presidentialCardTag" class="tag">Ultra Premium</span>
+              <img id="presidentialCardImage" src="https://i.pinimg.com/736x/3b/06/c9/3b06c99e5819fbe2819819d4efbc2056.jpg" alt="Presidential Suite">
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 id="presidentialCardTitle">Prestige Terrace Suite with Private Jacuzzi</h3>
+                <div id="presidentialCardPrice" class="price">₱35,000 / night</div>
+              </div>
+              <p id="presidentialCardDesc" class="muted">Spacious suite with private terrace overlooking the ocean and skyline. Features a personal outdoor jacuzzi.</p>
+              <div class="room-meta">
+                <span id="presidentialCardMeta1" class="pill">4 Guests</span>
+                <span id="presidentialCardMeta2" class="pill">Private Dining</span>
+                <span id="presidentialCardMeta3" class="pill">Panoramic View</span>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="openRoomModal('presidential')">View Details</button>
+                <a href="reservation.html" class="btn btn-secondary">Book Now</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card hidden-room extra-room">
+            <div class="card-media">
+              <button class="room-card-gear" type="button" onclick="openRoomEditor('ocean')">⚙</button>
+              <span id="oceanCardTag" class="tag">Ocean View</span>
+              <img id="oceanCardImage" src="https://i.pinimg.com/736x/6d/a0/4c/6da04c01b556eca363e6ff9bc803d43b.jpg" alt="Ocean Suite">
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 id="oceanCardTitle">Luminous Royal Duplex Suite</h3>
+                <div id="oceanCardPrice" class="price">₱65,000 / night</div>
+              </div>
+              <p id="oceanCardDesc" class="muted">Two-level luxury suite with dramatic city and ocean panoramic views.</p>
+              <div class="room-meta">
+                <span id="oceanCardMeta1" class="pill">3 Guests</span>
+                <span id="oceanCardMeta2" class="pill">Ocean View</span>
+                <span id="oceanCardMeta3" class="pill">King Bed</span>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="openRoomModal('ocean')">View Details</button>
+                <a href="reservation.html" class="btn btn-secondary">Book Now</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card hidden-room extra-room">
+            <div class="card-media">
+              <button class="room-card-gear" type="button" onclick="openRoomEditor('skyline')">⚙</button>
+              <span id="skylineCardTag" class="tag">City Lights</span>
+              <img id="skylineCardImage" src="https://i.pinimg.com/736x/d5/03/51/d50351de5f0f1d3adfcaad63548c1e4a.jpg" alt="Skyline Suite">
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h3 id="skylineCardTitle">Luminous Presidential Royal Suite (Largest Room)</h3>
+                <div id="skylineCardPrice" class="price">₱150,000 / night</div>
+              </div>
+              <p id="skylineCardDesc" class="muted">Our most prestigious suite offering uninterrupted 360° ocean and skyline views. Designed for ultimate luxury and privacy.</p>
+              <div class="room-meta">
+                <span id="skylineCardMeta1" class="pill">3 Guests</span>
+                <span id="skylineCardMeta2" class="pill">Skyline View</span>
+                <span id="skylineCardMeta3" class="pill">Lounge</span>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="openRoomModal('skyline')">View Details</button>
+                <a href="reservation.html" class="btn btn-secondary">Book Now</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="view-more-wrap">
+          <button id="toggleRoomsBtn" class="btn btn-pill" onclick="toggleMoreRooms()">View More Rooms</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-surface section-edit-wrap" id="offers" data-admin-section="offers" data-admin-label="Offers Section">
+      <span class="admin-section-badge">✏ Offers</span>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div id="offersEyebrow" class="eyebrow">Signature Offers</div>
+            <h2 id="offersTitle">Curated packages for romantic, family, and premium business stays.</h2>
+          </div>
+        </div>
+        <div class="promo-grid" id="offersGrid"></div>
+      </div>
+    </section>
+
+    <section class="section section-edit-wrap" id="activities" data-admin-section="activities" data-admin-label="Activities Section">
+      <span class="admin-section-badge">✏ Activities</span>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div id="activitiesEyebrow" class="eyebrow">Guest Experiences</div>
+            <h2 id="activitiesTitle">Experiences designed beyond just staying overnight.</h2>
+          </div>
+          <p id="activitiesLead" class="lead">Add a premium lifestyle feel to your stay with curated hotel activities and wellness experiences.</p>
+        </div>
+        <div class="activity-grid" id="activitiesGrid"></div>
+      </div>
+    </section>
+
+    <section class="section section-surface section-edit-wrap" id="reviews" data-admin-section="reviews" data-admin-label="Reviews Section">
+      <span class="admin-section-badge">✏ Reviews</span>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div id="reviewsEyebrow" class="eyebrow">Guest Reviews</div>
+            <h2 id="reviewsTitle">What our guests love most.</h2>
+          </div>
+        </div>
+        <div class="testimonial-grid" id="reviewsGrid"></div>
+      </div>
+    </section>
+
+    <section class="section section-edit-wrap" id="contact" data-admin-section="contact" data-admin-label="Contact + Footer Section">
+      <span class="admin-section-badge">✏ Contact</span>
+      <div class="container">
+        <div class="contact-box">
+          <div>
+            <div id="contactEyebrow" class="eyebrow">Plan Your Visit</div>
+            <h2 id="contactTitle" style="color:white;">Ready for an illuminated luxury escape?</h2>
+            <p id="contactText">Reserve your stay now and experience premium red-and-gold hospitality, breathtaking views, and a hotel identity designed to feel elegant and unforgettable.</p>
+          </div>
+
+          <div class="contact-actions">
+            <a href="reservation.html" id="contactBtn1" class="btn btn-pill">Reserve Now</a>
+            <button id="contactBtn2" class="btn btn-secondary" onclick="openAuthModal()">Login First</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-bar">
+      <div id="footerText1">© 2026 Luminous Smart Stay. All rights reserved.</div>
+      <div id="footerText2">Luxury stays • Ocean views • City lights • Illuminated experiences</div>
+    </div>
+  </footer>
+
+  <div id="authModal" class="modal">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Welcome</div>
+          <h3>Guest Account Access</h3>
+        </div>
+        <button class="close-x" onclick="closeAuthModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="auth-tabs">
+          <button id="tabLogin" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+          <button id="tabRegister" class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+        </div>
+
+        <div id="loginPane" class="auth-pane">
+          <input id="loginEmail" class="input" type="email" placeholder="Email address">
+          <input id="loginPass" class="input" type="password" placeholder="Password">
+          <div class="auth-actions">
+            <button class="btn btn-primary" onclick="loginUser()">Login</button>
+          </div>
+        </div>
+
+        <div id="registerPane" class="auth-pane" style="display:none;">
+          <input id="regName" class="input" type="text" placeholder="Full name">
+          <input id="regEmail" class="input" type="email" placeholder="Email address">
+          <input id="regPass" class="input" type="password" placeholder="Password">
+          <div class="auth-actions">
+            <button class="btn btn-primary" onclick="registerUser()">Create Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="roomModal" class="modal">
+    <div class="modal-card room-modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Room Details</div>
+          <h3 id="roomModalTitle">Room</h3>
+        </div>
+        <button class="close-x" onclick="closeRoomModal()">×</button>
+      </div>
+      <div class="modal-body room-modal-grid">
+        <div class="room-gallery-wrap">
+          <div class="room-gallery-stage">
+            <button type="button" class="room-gallery-nav prev" onclick="changeRoomGalleryImage(-1)" aria-label="Previous image">‹</button>
+            <img id="roomModalImage" class="room-gallery-main" src="" alt="Room" onclick="openRoomFullscreen()">
+            <button type="button" class="room-gallery-nav next" onclick="changeRoomGalleryImage(1)" aria-label="Next image">›</button>
+            <button type="button" id="roomZoomBtn" class="room-gallery-icon-btn zoom" onclick="openRoomFullscreen()" aria-label="Open fullscreen">⤢</button>
+            <button type="button" id="roomSlideBtn" class="room-gallery-icon-btn slideshow" onclick="toggleRoomSlideshow()" aria-label="Toggle slideshow">▶</button>
+            <div id="roomGalleryCounter" class="room-gallery-counter">1 / 1</div>
+          </div>
+          <div id="roomModalThumbs" class="room-gallery-thumbs"></div>
+          <div class="room-gallery-hint">Swipe on mobile • Click image to zoom fullscreen • Slideshow available</div>
+        </div>
+        <div>
+          <p id="roomModalDesc" class="lead" style="max-width:none;"></p>
+          <ul id="roomModalFeatures" class="room-details-list"></ul>
+          <div class="card-actions">
+            <a id="roomModalReserveLink" href="reservation.html" class="btn btn-primary">Proceed to Reservation</a>
+            <button class="btn btn-secondary" onclick="closeRoomModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="roomFullscreenModal" class="room-fullscreen-modal" onclick="handleFullscreenBackdrop(event)">
+    <button type="button" class="room-fullscreen-close" onclick="closeRoomFullscreen()" aria-label="Close fullscreen">×</button>
+    <button type="button" class="room-fullscreen-nav prev" onclick="changeRoomGalleryImage(-1)" aria-label="Previous image">‹</button>
+    <div class="room-fullscreen-stage">
+      <div class="room-fullscreen-toolbar">
+        <span id="roomFullscreenCounter" class="room-fullscreen-counter">1 / 1</span>
+        <div class="room-fullscreen-actions">
+          <button type="button" class="room-fullscreen-btn" onclick="toggleFullscreenZoom()">Zoom</button>
+          <button type="button" id="roomFullscreenSlideBtn" class="room-fullscreen-btn" onclick="toggleRoomSlideshow()">Play</button>
+        </div>
+      </div>
+      <img id="roomFullscreenImage" class="room-fullscreen-image" src="" alt="Room">
+      <div id="roomFullscreenThumbs" class="room-fullscreen-thumbs"></div>
+    </div>
+    <button type="button" class="room-fullscreen-nav next" onclick="changeRoomGalleryImage(1)" aria-label="Next image">›</button>
+  </div>
+
+  <div id="activityModal" class="modal">
+    <div class="modal-card" style="max-width: 720px;">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Experience Details</div>
+          <h3 id="activityTitle">Activity</h3>
+        </div>
+        <button class="close-x" onclick="closeActivityModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <p id="activityDesc" class="lead" style="max-width:none;"></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="userBookingsModal" class="modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Your Reservations</div>
+          <h3 id="userBookingsTitle">Booking History</h3>
+        </div>
+        <button id="closeUserBookingsModal" class="close-x">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Guest</th>
+                <th>Room</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="userBookingsBody">
+              <tr>
+                <td colspan="5">No bookings found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="roomEditorModal" class="modal">
+    <div class="modal-card" style="max-width: 780px;">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Admin Room Editor</div>
+          <h3 id="roomEditorTitle">Edit Room</h3>
+        </div>
+        <button class="close-x" onclick="closeRoomEditor()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="editor-grid">
+          <div class="field"><label>Card Tag</label><input id="editRoomTag" class="input" type="text"></div>
+          <div class="field"><label>Room Title</label><input id="editRoomTitle" class="input" type="text"></div>
+          <div class="field"><label>Room Price</label><input id="editRoomPrice" class="input" type="text"></div>
+          <div class="field"><label>Room Image URL</label><input id="editRoomImage" class="input" type="text"></div>
+          <div class="field"><label>Gallery Image 1</label><input id="editRoomGallery1" class="input" type="text"></div>
+          <div class="field"><label>Gallery Image 2</label><input id="editRoomGallery2" class="input" type="text"></div>
+          <div class="field"><label>Gallery Image 3</label><input id="editRoomGallery3" class="input" type="text"></div>
+          <div class="field"><label>Gallery Image 4</label><input id="editRoomGallery4" class="input" type="text"></div>
+          <div class="field"><label>Room Description</label><textarea id="editRoomDesc" class="input"></textarea></div>
+          <div class="field"><label>Meta 1</label><input id="editRoomMeta1" class="input" type="text"></div>
+          <div class="field"><label>Meta 2</label><input id="editRoomMeta2" class="input" type="text"></div>
+          <div class="field"><label>Meta 3</label><input id="editRoomMeta3" class="input" type="text"></div>
+          <div class="field"><label>Modal Feature 1</label><input id="editRoomFeature1" class="input" type="text"></div>
+          <div class="field"><label>Modal Feature 2</label><input id="editRoomFeature2" class="input" type="text"></div>
+          <div class="field"><label>Modal Feature 3</label><input id="editRoomFeature3" class="input" type="text"></div>
+          <div class="field"><label>Modal Feature 4</label><input id="editRoomFeature4" class="input" type="text"></div>
+          <div class="field"><label>Modal Feature 5</label><input id="editRoomFeature5" class="input" type="text"></div>
+          <div class="field"><label>Modal Feature 6</label><input id="editRoomFeature6" class="input" type="text"></div>
+        </div>
+
+        <div class="card-actions" style="margin-top:16px;">
+          <button class="btn btn-primary" onclick="saveRoomEditor()">Save Room</button>
+          <button class="btn btn-secondary" onclick="closeRoomEditor()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="activityEditorModal" class="modal">
+    <div class="modal-card" style="max-width: 780px;">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Admin Activity Editor</div>
+          <h3 id="activityEditorTitle">Edit Activity</h3>
+        </div>
+        <button class="close-x" onclick="closeActivityEditor()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="editor-grid">
+          <div class="field">
+            <label>Image URL</label>
+            <input id="editActivityImage" class="input" type="text">
+          </div>
+
+          <div class="field">
+            <label>Card Title</label>
+            <input id="editActivityTitle" class="input" type="text">
+          </div>
+
+          <div class="field">
+            <label>Card Description</label>
+            <textarea id="editActivityDesc" class="input"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Button Text</label>
+            <input id="editActivityButtonText" class="input" type="text">
+          </div>
+
+          <div class="field">
+            <label>Popup Title</label>
+            <input id="editActivityModalTitle" class="input" type="text">
+          </div>
+
+          <div class="field">
+            <label>Popup Description</label>
+            <textarea id="editActivityModalDesc" class="input"></textarea>
+          </div>
+        </div>
+
+        <div class="card-actions" style="margin-top:16px;">
+          <button class="btn btn-primary" onclick="saveActivityEditor()">Save Activity</button>
+          <button class="btn btn-secondary" onclick="closeActivityEditor()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="adminEditorLauncher" class="admin-launcher">
+    <div class="admin-launcher-stack">
+      <button type="button" class="admin-launcher-btn" onclick="toggleAdminEditorPanel()">✨ Admin Editor</button>
+      <button type="button" class="admin-launcher-btn" onclick="toggleEditMode()" id="editModeToggleBtn">Edit Mode: OFF</button>
+    </div>
+  </div>
+
+  <div id="adminSectionToast" class="admin-section-toast">Editing mode is on. Click a highlighted section.</div>
+
+  <div id="adminEditorPanel" class="admin-panel">
+    <div class="admin-panel-header">
+      <div>
+        <div class="admin-panel-kicker">Admin Editor</div>
+        <h3 id="adminPanelTitle">Select a section</h3>
+        <p id="adminPanelSubtitle">Turn on Edit Mode, then click a highlighted section on the page.</p>
+      </div>
+      <button type="button" class="close-x" onclick="closeAdminEditorPanel()">×</button>
+    </div>
+
+    <div class="admin-panel-body">
+      <div id="adminPanelEmpty" class="admin-empty-state">Turn on Edit Mode, then click any highlighted section on the page.</div>
+
+      <div id="adminEditorFormWrap" style="display:none;">
+        <div class="admin-panel-actions-top">
+          <button type="button" class="btn btn-secondary" id="addRepeaterBtn" style="display:none;" onclick="addAdvancedItem()">+ Add Item</button>
+        </div>
+
+        <div id="adminEditorFields" class="editor-grid"></div>
+
+        <div class="card-actions" style="margin-top:16px;">
+          <button class="btn btn-primary" onclick="saveAdvancedSection()">Save Changes</button>
+          <button class="btn btn-secondary" onclick="closeAdminEditorPanel()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+  (async () => {
+    const STORAGE_KEYS = {
+          users: "lumiereUsers",
+          currentUser: "lumiereCurrentUser",
+          advancedEditor: "lumiereAdvancedEditor",
+          roomData: "lumiereRoomData",
+          reservations: "lumiereReservations",
+          registrationLogs: "lumiereRegistrationLogs"
+        };
+
+        function readStorage(key, fallback) {
+          try {
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw) : fallback;
+          } catch (err) {
+            console.error(`Failed to read ${key}:`, err);
+            return fallback;
+          }
+        }
+
+        function writeStorage(key, value) {
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+
+        function makeId(prefix = "id") {
+          return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+        }
+
+        function hashPassword(value = "") {
+          return btoa(unescape(encodeURIComponent(value)));
+        }
+
+        function getUsers() {
+          return readStorage(STORAGE_KEYS.users, []);
+        }
+
+        function saveUsers(users) {
+          writeStorage(STORAGE_KEYS.users, users);
+        }
+
+        function ensureDefaultAdminAccount() {
+          const users = getUsers();
+          const adminEmail = "admin@admin.com";
+          const adminPassword = hashPassword("admin1234");
+          const existingAdminIndex = users.findIndex(user => (user.email || "").toLowerCase() === adminEmail);
+
+          if (existingAdminIndex >= 0) {
+            users[existingAdminIndex] = {
+              ...users[existingAdminIndex],
+              name: users[existingAdminIndex].name || "Administrator",
+              email: adminEmail,
+              password: adminPassword,
+              role: "admin"
+            };
+          } else {
+            users.unshift({
+              uid: "admin_default_account",
+              name: "Administrator",
+              email: adminEmail,
+              password: adminPassword,
+              role: "admin",
+              createdAt: 0
+            });
+          }
+
+          saveUsers(users);
+        }
+
+        function getStoredCurrentUser() {
+          return readStorage(STORAGE_KEYS.currentUser, null);
+        }
+
+        function setStoredCurrentUser(user) {
+          if (!user) {
+            localStorage.removeItem(STORAGE_KEYS.currentUser);
+            return;
+          }
+          writeStorage(STORAGE_KEYS.currentUser, user);
+        }
+
+        function saveAdvancedEditorState() {
+          writeStorage(STORAGE_KEYS.advancedEditor, advancedState);
+        }
+
+        function saveRoomState() {
+          writeStorage(STORAGE_KEYS.roomData, roomData);
+        }
+
+        function getReservations() {
+          return readStorage(STORAGE_KEYS.reservations, []);
+        }
+
+        function downloadRegistrationFile(entry) {
+          try {
+            const content = JSON.stringify(entry, null, 2);
+            const blob = new Blob([content], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `registration-${entry.uid}.json`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+          } catch (err) {
+            console.error("Failed to create registration file:", err);
+          }
+        }
+
+        let currentUser = null;
+        let currentEditingRoomKey = null;
+        let currentEditingActivityIndex = null;
+        let currentAdvancedSectionKey = null;
+        let currentRoomGalleryImages = [];
+        let currentRoomGalleryIndex = 0;
+        let currentRoomKey = null;
+        let roomGallerySlideshowTimer = null;
+        let roomFullscreenZoomed = false;
+        let roomTouchStartX = 0;
+        let roomTouchEndX = 0;
+        let isEditMode = false;
+        const advancedState = {};
+
+        function qs(id) {
+          return document.getElementById(id);
+        }
+
+        function showToast(message) {
+          const toast = qs("toast");
+          toast.textContent = message;
+          toast.classList.add("show");
+          setTimeout(() => toast.classList.remove("show"), 2500);
+        }
+
+        function escapeHtml(str = "") {
+          return String(str)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;");
+        }
+
+        function clone(value) {
+          return JSON.parse(JSON.stringify(value));
+        }
+
+        let roomData = {
+          solo: { tag: "Solo Travelers", title: "Luminous Solo Studio", price: "₱6,800 / night", image: "https://i.pinimg.com/736x/9b/83/08/9b8308f3136e9ca741bcd80738ab6559.jpg", gallery: ["https://i.pinimg.com/736x/9b/83/08/9b8308f3136e9ca741bcd80738ab6559.jpg","https://i.pinimg.com/736x/5b/c6/05/5bc6053aaa178d6bf1b8ac590d0076e0.jpg","https://i.pinimg.com/736x/55/e6/b2/55e6b2d430520491954475d3ef63bf9e.jpg","https://i.pinimg.com/736x/74/3c/43/743c43404508255503901af88c1605e3.jpg"], desc: "A modern, cozy single-occupancy room designed for comfort and elegance. Warm red and gold accents reflect the Luminous brand identity.", meta: ["2 Guests", "King Bed", "City View"], features: ["Single premium bed", "Smart TV", "Private bathroom with rainfall shower", "Work desk", "Mini bar", "Digital safe", "Complimentary WiFi", "Access to rooftop pool"] },
+          premier: { tag: "Budget Couples", title: "Deluxe Ocean View Room", price: "₱9,800 / night", image: "https://i.pinimg.com/736x/6a/74/7f/6a747f1dae3337e9fcceed2639f25d40.jpg", gallery: ["https://i.pinimg.com/736x/6a/74/7f/6a747f1dae3337e9fcceed2639f25d40.jpg","https://i.pinimg.com/736x/40/e2/ba/40e2ba04cfa070b5f545eea17e0085a0.jpg","https://i.pinimg.com/736x/e3/ac/43/e3ac431ef63d0c98679fcfacc9713a86.jpg","https://i.pinimg.com/736x/61/7b/c1/617bc1c635aca4e8c43263a6092f5cf9.jpg"], desc: "Enjoy calming ocean views from the back-facing window. Designed with floor-to-ceiling glass panels to maximize natural light.", meta: ["2 Guests", "Premium Bath", "Mini Bar"], features: ["Queen or twin beds", "Large ocean-facing window", "Elegant bathroom with glass shower", "Smart TV", "Mini bar", "Coffee & tea station", "Complimentary WiFi", "Rooftop pool access"] },
+          executive: { tag: "Skyline Views", title: "Premier City Lights Room", price: "₱10,500 / night", image: "https://i.pinimg.com/736x/34/17/b0/3417b0d75c1830f95114bb80cf9647bb.jpg", gallery: ["https://i.pinimg.com/736x/34/17/b0/3417b0d75c1830f95114bb80cf9647bb.jpg","https://i.pinimg.com/736x/e4/3f/33/e43f333fc83d405154cbdf390a301f49.jpg","https://i.pinimg.com/736x/de/b4/83/deb483e07f432373f4b54600fe596839.jpg","https://i.pinimg.com/736x/3e/19/b5/3e19b5e6140228b5aab7685c7e37e27d.jpg"], desc: "Front-facing room overlooking the glowing city lights at night. Romantic and vibrant ambiance.", meta: ["3 Guests", "Lounge Area", "Bathtub"], features: ["King-size bed", "Floor-to-ceiling city view window", "Lounge chair seating", "Luxury bathroom amenities", "Smart TV", "Mini bar", "Complimentary WiFi", "Pool Access"] },
+          family: { tag: "Couples Travelers", title: "Grand Balcony Room", price: "₱14,500 / night", image: "https://i.pinimg.com/736x/09/0b/45/090b45ddbce8e2707af31e056a79e620.jpg", gallery: ["https://i.pinimg.com/736x/09/0b/45/090b45ddbce8e2707af31e056a79e620.jpg","https://i.pinimg.com/736x/ac/fa/5e/acfa5e0e31455ef725e09d7239b888ef.jpg","https://i.pinimg.com/736x/2e/c1/65/2ec1659163e41eb4c72f3ee7a04c6ec0.jpg","https://i.pinimg.com/736x/f0/d4/a4/f0d4a4d29755edd06fe3b86819b6e937.jpg"], desc: "Private balcony with your choice of Ocean View (back side) or City Lights View (front side).", meta: ["5 Guests", "2 Beds", "Lounge"], features: ["King-size bed", "Private balcony with seating", "Sofa corner", "Smart TV", "Mini bar", "Espresso machine", "Rainfall shower", "Complimentary WiFi", "Pool access"] },
+          royal: { tag: "Family Suite", title: "Luminous Family Suite", price: "₱22,000 / night", image: "https://i.pinimg.com/736x/b5/42/19/b54219cd6529a5fce63fc76a2c0a31d0.jpg", gallery: ["https://i.pinimg.com/736x/b5/42/19/b54219cd6529a5fce63fc76a2c0a31d0.jpg","https://i.pinimg.com/736x/a8/a9/27/a8a92788be47f043bb9c4df410df9cd1.jpg","https://i.pinimg.com/736x/69/97/c3/6997c33543337bcb507e26edb761fbd7.jpg","https://i.pinimg.com/736x/7f/96/03/7f96039636d71025ada4802aaddbbed3.jpg"], desc: "Two connected rooms with shared entry. Spacious and comfortable for up to 6 guests.(front side).", meta: ["4 Guests", "Private Lounge", "Luxury Bath"], features: ["2 Bedrooms", "2 Bathrooms", "Living area with sofa bed", "Balcony (Ocean or City view)", "2 Smart TVs", "Mini bar", "Dining nook", "Complimentary WiFi", "Rooftop pool access"] },
+          presidential: { tag: "Romantic Stay", title: "Prestige Terrace Suite with Private Jacuzzi", price: "₱35,000 / night", image: "https://i.pinimg.com/736x/3b/06/c9/3b06c99e5819fbe2819819d4efbc2056.jpg", gallery: ["https://i.pinimg.com/736x/3b/06/c9/3b06c99e5819fbe2819819d4efbc2056.jpg","https://i.pinimg.com/736x/83/82/51/83825100a60d0b122c2a68d26ebff9bf.jpg","https://i.pinimg.com/736x/22/47/e0/2247e0fce89c66b76299cea07844f900.jpg","https://i.pinimg.com/736x/82/01/1d/82011d2014bd5af15420fe3fbc9b4543.jpg"], desc: "Spacious suite with private terrace overlooking the ocean and skyline. Features a personal outdoor jacuzzi.", meta: ["4 Guests", "Private Dining", "Panoramic View"], features: ["King-size bed", "Private terrace", "Outdoor jacuzzi", "Separate living area", "Walk-in closet", "Luxury bath with soaking tub", "Complimentary minibar (selected items)", "Priority restaurant reservations", "Rooftop pool VIP access"] },
+          ocean: { tag: "Duplex Suite", title: "Luminous Royal Duplex Suite", price: "₱65,000 / night", image: "https://i.pinimg.com/736x/6d/a0/4c/6da04c01b556eca363e6ff9bc803d43b.jpg", gallery: ["https://i.pinimg.com/736x/6d/a0/4c/6da04c01b556eca363e6ff9bc803d43b.jpg","https://i.pinimg.com/736x/67/a9/11/67a9114eb3124f4f501a0bd42a255691.jpg","https://i.pinimg.com/736x/8b/3e/50/8b3e5099f0b281a2ec9efc3521b38c08.jpg","https://i.pinimg.com/736x/06/8b/d3/068bd3c7aff4f18dfef275b648dc6fe4.jpg"], desc: "Two-level luxury suite with dramatic city and ocean panoramic views.", meta: ["3 Guests", "Ocean View", "King Bed"], features: ["Private terrace with jacuzzi", "Butler-on-call service", "Exclusive VIP lounge access", "Complimentary breakfast at 360° Sky Restaurant", "Premium WiFi", "Private check-in service"] },
+          skyline: { tag: "VIP Choice", title: "Luminous Presidential Royal Suite (Largest Room)", price: "₱150,000 / night", image: "https://i.pinimg.com/736x/d5/03/51/d50351de5f0f1d3adfcaad63548c1e4a.jpg", gallery: ["https://i.pinimg.com/736x/d5/03/51/d50351de5f0f1d3adfcaad63548c1e4a.jpg","https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=80"], desc: "Our most prestigious suite offering uninterrupted 360° ocean and skyline views. Designed for ultimate luxury and privacy.", meta: ["3 Guests", "Skyline View", "Lounge"], features: ["2 Master Bedrooms", "Private dining area", "Grand living room", "Private rooftop plunge pool", "Personal butler service", "Complimentary fine-dining experience", "Spa treatment package for 2", "VIP pool cabana access", "Private elevator access", "Smart room automation system"] }
+        };
+
+        const defaultAdvancedState = {
+          home: {
+            singles: {
+              homeTitle: "Welcome to Luminous Smart Stay",
+              homeSubtitle: "Where Ocean Serenity Meets City Brilliance",
+              homeBtn1: "Book Your Stay",
+              homeBtn2: "Explore Rooms",
+              homeStat1Title: "5-Star",
+              homeStat1Text: "Luxury Experience",
+              homeStat2Title: "360°",
+              homeStat2Text: "Sky Dining",
+              homeStat3Title: "24/7",
+              homeStat3Text: "Guest Service",
+              bookingCardTitle: "Quick Booking",
+              bookingCardText: "Choose your dates and go straight to reservation with a smoother guest experience.",
+              bookingCardBtn: "Check Availability"
+            }
+          },
+          about: {
+            singles: {
+              aboutEyebrow: "About Us",
+              aboutTitle: "An illuminated destination of prestige, warmth, and breathtaking views.",
+              aboutImage: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80",
+              aboutBadgeTitle: "Luminous Smart Stay",
+              aboutBadgeText: "Where ocean calm and city brilliance meet in one refined luxury escape."
+            },
+            items: [
+              { paragraph: "A beacon of timeless elegance, rising gracefully between the serene ocean horizon and the radiant city skyline. Inspired by modern European luxury and elevated hospitality, our hotel brings together sophistication, comfort, and breathtaking views to create an unforgettable stay." },
+              { paragraph: "Situated in a prime location, Luminous Smart Stay offers sweeping ocean views at the back and stunning city lights at the front—giving guests the perfect balance of tranquility and vibrance. Our signature red and gold interiors embody passion, prestige, and warmth, creating an atmosphere that feels both exclusive and inviting." },
+              { paragraph: "Whether you’re traveling for leisure, business, romance, or celebration, Luminous Smart Stay is thoughtfully designed to deliver a seamless and luxurious escape." },
+              { paragraph: "At Luminous Smart Stay, we don’t just provide rooms—we craft luminous experiences." }
+            ]
+          },
+          roomsHeader: {
+            singles: {
+              roomsEyebrow: "Featured Rooms",
+              roomsTitle: "Choose your signature stay."
+            }
+          },
+          offers: {
+            singles: {
+              offersEyebrow: "Signature Offers",
+              offersTitle: "Curated packages for romantic, family, and premium business stays."
+            },
+            items: [
+              { eyebrow: "Featured Deal", image: "https://images.unsplash.com/photo-1675755310466-4956c574ef73?q=80&w=955&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D=80", title: "Ocean Escape Package", desc: "Suite upgrade, breakfast for two, rose petal setup, and late checkout." },
+              { eyebrow: "", image: "https://images.unsplash.com/photo-1568998004334-4e7291e1a04b?q=80&w=873&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D=80", title: "Romantic Luminous Getaway", desc: "A cozy, candlelit escape for couples to relax, reconnect, and celebrate love." },
+              { eyebrow: "", image: "https://plus.unsplash.com/premium_photo-1663089633751-2349f2dbc5be?q=80&w=896&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D=80", title: "Family Luxe Bundle", desc: "A cozy, family-friendly package for relaxing, bonding, and making special memories together." },
+              { eyebrow: "", image: "https://plus.unsplash.com/premium_photo-1664201889896-6a42c19e953a?q=80&w=936&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D=80", title: "Executive Stay Deal", desc: "Airport transfer, breakfast, meeting room access, and express check-out." }
+            ]
+          },
+          activities: {
+            singles: {
+              activitiesEyebrow: "Guest Experiences",
+              activitiesTitle: "Experiences designed beyond just staying overnight.",
+              activitiesLead: "Add a premium lifestyle feel to your stay with curated hotel activities and wellness experiences."
+            },
+            items: [
+              {
+                image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80",
+                title: "Spa & Wellness",
+                desc: "Relax with signature treatments, aromatherapy, and private wellness sessions.",
+                buttonText: "Learn More",
+                modalTitle: "Luxury Spa",
+                modalDesc: "Enjoy signature massage rituals, calming aromatherapy, and a full relaxation experience in a tranquil private setting made for deep rest and recovery."
+              },
+              {
+                image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1000&q=80",
+                title: "Rooftop Infinity Pool",
+                desc: "Swim above the city with premium loungers and skyline views.",
+                buttonText: "Learn More",
+                modalTitle: "Rooftop Infinity Pool",
+                modalDesc: "Take in spectacular views from our rooftop infinity pool, relax on premium loungers, and enjoy curated refreshments from golden hour to evening."
+              },
+              {
+                image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1000&q=80",
+                title: "Fitness Studio",
+                desc: "Modern equipment, personal coaching, and wellness-friendly amenities.",
+                buttonText: "Learn More",
+                modalTitle: "Fitness Studio",
+                modalDesc: "Train in a well-equipped fitness space with modern machines, personalized guidance, and a wellness-first environment."
+              },
+              {
+                image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1000&q=80",
+                title: "VIP Lounge",
+                desc: "Chef-curated menus and premium dining with spectacular views.",
+                buttonText: "Learn More",
+                modalTitle: "VIP Lounge",
+                modalDesc: "Savor elegant dishes crafted by our culinary team with premium ingredients, artful plating, and panoramic dining views above the city."
+              }
+            ]
+          },
+          reviews: {
+            singles: {
+              reviewsEyebrow: "Guest Reviews",
+              reviewsTitle: "What our guests love most."
+            },
+            items: [
+              { stars: "★★★★★", text: "“The hotel feels premium and elegant from the first step inside. The red and gold details really made it memorable.”", name: "Renz A." },
+              { stars: "★★★★★", text: "“The suite was bright, luxurious, and not boring at all. It truly felt like a real luxury brand experience.”", name: "Vince C." },
+              { stars: "★★★★★", text: "“Loved the booking flow, the staff service, and the skyline atmosphere. Everything felt polished and exclusive.”", name: "Gabriel D." }
+            ]
+          },
+          contact: {
+            singles: {
+              contactEyebrow: "Plan Your Visit",
+              contactTitle: "Ready for an illuminated luxury escape?",
+              contactText: "Reserve your stay now and experience premium red-and-gold hospitality, breathtaking views, and a hotel identity designed to feel elegant and unforgettable.",
+              contactBtn1: "Reserve Now",
+              contactBtn2: "Login First",
+              footerText1: "© 2026 Luminous Smart Stay. All rights reserved.",
+              footerText2: "Luxury stays • Ocean views • City lights • Illuminated experiences"
+            }
+          }
+        };
+
+        const advancedEditorConfig = {
+          home: {
+            label: "Hero Section",
+            singles: [
+              { key: "homeTitle", label: "Hero Title", type: "textarea" },
+              { key: "homeSubtitle", label: "Hero Subtitle", type: "textarea" },
+              { key: "homeBtn1", label: "Primary Button Text", type: "text" },
+              { key: "homeBtn2", label: "Secondary Button Text", type: "text" },
+              { key: "homeStat1Title", label: "Stat 1 Title", type: "text" },
+              { key: "homeStat1Text", label: "Stat 1 Text", type: "text" },
+              { key: "homeStat2Title", label: "Stat 2 Title", type: "text" },
+              { key: "homeStat2Text", label: "Stat 2 Text", type: "text" },
+              { key: "homeStat3Title", label: "Stat 3 Title", type: "text" },
+              { key: "homeStat3Text", label: "Stat 3 Text", type: "text" },
+              { key: "bookingCardTitle", label: "Quick Booking Title", type: "text" },
+              { key: "bookingCardText", label: "Quick Booking Text", type: "textarea" },
+              { key: "bookingCardBtn", label: "Quick Booking Button Text", type: "text" }
+            ]
+          },
+          about: {
+            label: "About Section",
+            singles: [
+              { key: "aboutEyebrow", label: "Eyebrow", type: "text" },
+              { key: "aboutTitle", label: "Section Title", type: "textarea" },
+              { key: "aboutImage", label: "Image URL", type: "image" },
+              { key: "aboutBadgeTitle", label: "Badge Title", type: "text" },
+              { key: "aboutBadgeText", label: "Badge Text", type: "textarea" }
+            ],
+            repeater: {
+              label: "Paragraph",
+              fields: [
+                { key: "paragraph", label: "Paragraph Text", type: "textarea" }
+              ]
+            }
+          },
+          roomsHeader: {
+            label: "Rooms Section Header",
+            singles: [
+              { key: "roomsEyebrow", label: "Eyebrow", type: "text" },
+              { key: "roomsTitle", label: "Section Title", type: "textarea" }
+            ]
+          },
+          offers: {
+            label: "Offers Section",
+            singles: [
+              { key: "offersEyebrow", label: "Eyebrow", type: "text" },
+              { key: "offersTitle", label: "Section Title", type: "textarea" }
+            ],
+            repeater: {
+              label: "Offer",
+              fields: [
+                { key: "eyebrow", label: "Offer Eyebrow", type: "text" },
+                { key: "image", label: "Image URL", type: "image" },
+                { key: "title", label: "Offer Title", type: "text" },
+                { key: "desc", label: "Offer Description", type: "textarea" },
+                { key: "buttonText", label: "Button Text", type: "text" }
+              ]
+            }
+          },
+          activities: {
+            label: "Activities Section",
+            singles: [
+              { key: "activitiesEyebrow", label: "Eyebrow", type: "text" },
+              { key: "activitiesTitle", label: "Section Title", type: "textarea" },
+              { key: "activitiesLead", label: "Lead Text", type: "textarea" }
+            ],
+            repeater: {
+              label: "Activity Card",
+              fields: [
+                { key: "image", label: "Image URL", type: "image" },
+                { key: "title", label: "Card Title", type: "text" },
+                { key: "desc", label: "Card Description", type: "textarea" },
+                { key: "buttonText", label: "Button Text", type: "text" },
+                { key: "modalTitle", label: "Popup Title", type: "text" },
+                { key: "modalDesc", label: "Popup Description", type: "textarea" }
+              ]
+            }
+          },
+          reviews: {
+            label: "Reviews Section",
+            singles: [
+              { key: "reviewsEyebrow", label: "Eyebrow", type: "text" },
+              { key: "reviewsTitle", label: "Section Title", type: "textarea" }
+            ],
+            repeater: {
+              label: "Review Card",
+              fields: [
+                { key: "stars", label: "Stars", type: "text" },
+                { key: "text", label: "Review Text", type: "textarea" },
+                { key: "name", label: "Reviewer Name", type: "text" }
+              ]
+            }
+          },
+          contact: {
+            label: "Contact + Footer Section",
+            singles: [
+              { key: "contactEyebrow", label: "Eyebrow", type: "text" },
+              { key: "contactTitle", label: "Contact Title", type: "textarea" },
+              { key: "contactText", label: "Contact Description", type: "textarea" },
+              { key: "contactBtn1", label: "Primary Button Text", type: "text" },
+              { key: "contactBtn2", label: "Secondary Button Text", type: "text" },
+              { key: "footerText1", label: "Footer Line 1", type: "text" },
+              { key: "footerText2", label: "Footer Line 2", type: "text" }
+            ]
+          }
+        };
+
+        function updateEditModeUI() {
+          const btn = qs("editModeToggleBtn");
+          if (btn) {
+            btn.textContent = isEditMode ? "Edit Mode: ON" : "Edit Mode: OFF";
+          }
+          document.body.classList.toggle("edit-mode", isEditMode);
+        }
+
+        function toggleEditMode() {
+          if (!document.body.classList.contains("admin-enabled")) return;
+          isEditMode = !isEditMode;
+          updateEditModeUI();
+          if (isEditMode) showAdminHint();
+        }
+
+        function showAdminLauncher(show) {
+          qs("adminEditorLauncher").style.display = show ? "block" : "none";
+        }
+
+        function showAdminHint() {
+          const toast = qs("adminSectionToast");
+          toast.style.display = "block";
+          setTimeout(() => {
+            toast.style.display = "none";
+          }, 2500);
+        }
+
+        function toggleAdminEditorPanel() {
+          qs("adminEditorPanel").classList.toggle("open");
+        }
+
+        function closeAdminEditorPanel() {
+          qs("adminEditorPanel").classList.remove("open");
+        }
+
+        function setAdminPanelEmpty() {
+          currentAdvancedSectionKey = null;
+          qs("adminPanelTitle").textContent = "Select a section";
+          qs("adminPanelSubtitle").textContent = "Turn on Edit Mode, then click a highlighted section on the page.";
+          qs("adminPanelEmpty").style.display = "block";
+          qs("adminEditorFormWrap").style.display = "none";
+          qs("addRepeaterBtn").style.display = "none";
+          qs("adminEditorFields").innerHTML = "";
+        }
+
+        function openAuthModal() {
+          qs("authModal").classList.add("active");
+        }
+
+        function closeAuthModal() {
+          qs("authModal").classList.remove("active");
+        }
+
+        function switchAuthTab(mode) {
+          const isRegister = mode === "register";
+          qs("loginPane").style.display = isRegister ? "none" : "grid";
+          qs("registerPane").style.display = isRegister ? "grid" : "none";
+          qs("tabLogin").classList.toggle("active", !isRegister);
+          qs("tabRegister").classList.toggle("active", isRegister);
+        }
+
+        async function loginUser() {
+          const email = qs("loginEmail").value.trim().toLowerCase();
+          const password = qs("loginPass").value;
+
+          if (!email || !password) {
+            showToast("Enter your email and password.");
+            return;
+          }
+
+          try {
+            const users = getUsers();
+            const matchedUser = users.find(user => user.email.toLowerCase() === email && user.password === hashPassword(password));
+
+            if (!matchedUser) {
+              showToast("Invalid email or password.");
+              return;
+            }
+
+            currentUser = {
+              uid: matchedUser.uid,
+              displayName: matchedUser.name,
+              email: matchedUser.email,
+              role: matchedUser.role || "user"
+            };
+
+            setStoredCurrentUser(currentUser);
+            setLoggedIn(currentUser.displayName || currentUser.email || "User", currentUser.role === "admin");
+            closeAuthModal();
+            showToast("Logged in successfully.");
+          } catch (err) {
+            console.error(err);
+            showToast(err.message || "Login failed.");
+          }
+        }
+
+        async function registerUser() {
+          const fullName = qs("regName").value.trim();
+          const email = qs("regEmail").value.trim().toLowerCase();
+          const password = qs("regPass").value;
+
+          if (!fullName || !email || !password) {
+            showToast("Complete all registration fields.");
+            return;
+          }
+
+          try {
+            const users = getUsers();
+            if (users.some(user => user.email.toLowerCase() === email)) {
+              showToast("This email is already registered.");
+              return;
+            }
+
+            const createdAt = Date.now();
+            const newUser = {
+              uid: makeId("user"),
+              name: fullName,
+              email,
+              password: hashPassword(password),
+              role: users.length === 0 ? "admin" : "user",
+              createdAt
+            };
+
+            users.push(newUser);
+            saveUsers(users);
+
+            const registrationEntry = {
+              uid: newUser.uid,
+              name: newUser.name,
+              email: newUser.email,
+              role: newUser.role,
+              createdAt
+            };
+
+            const logs = readStorage(STORAGE_KEYS.registrationLogs, []);
+            logs.push(registrationEntry);
+            writeStorage(STORAGE_KEYS.registrationLogs, logs);
+            downloadRegistrationFile(registrationEntry);
+
+            currentUser = {
+              uid: newUser.uid,
+              displayName: newUser.name,
+              email: newUser.email,
+              role: newUser.role
+            };
+
+            setStoredCurrentUser(currentUser);
+            setLoggedIn(currentUser.displayName || currentUser.email || "User", currentUser.role === "admin");
+            closeAuthModal();
+            showToast("Account created successfully.");
+          } catch (err) {
+            console.error(err);
+            showToast(err.message || "Registration failed.");
+          }
+        }
+
+        async function logoutUser() {
+          try {
+            currentUser = null;
+            setStoredCurrentUser(null);
+            setLoggedOut();
+            showToast("Logged out.");
+          } catch (err) {
+            console.error(err);
+            showToast("Logout failed.");
+          }
+        }
+
+        window.openAuthModal = openAuthModal;
+        window.closeAuthModal = closeAuthModal;
+        window.switchAuthTab = switchAuthTab;
+        window.loginUser = loginUser;
+        window.registerUser = registerUser;
+        window.toggleEditMode = toggleEditMode;
+        bindRoomGalleryInteractions();
+
+        function getRoomGallery(room) {
+          const gallery = Array.isArray(room?.gallery) ? room.gallery.filter(Boolean) : [];
+          const fallback = room?.image ? [room.image] : [];
+          const merged = gallery.length ? gallery : fallback;
+          return [...new Set(merged)].slice(0, 4);
+        }
+
+        function syncGalleryButtons() {
+          const isPlaying = !!roomGallerySlideshowTimer;
+          qs("roomSlideBtn")?.classList.toggle("is-playing", isPlaying);
+          qs("roomFullscreenSlideBtn")?.classList.toggle("is-playing", isPlaying);
+          if (qs("roomSlideBtn")) qs("roomSlideBtn").textContent = isPlaying ? "❚❚" : "▶";
+          if (qs("roomFullscreenSlideBtn")) qs("roomFullscreenSlideBtn").textContent = isPlaying ? "Pause" : "Play";
+        }
+
+        function stopRoomSlideshow() {
+          if (roomGallerySlideshowTimer) {
+            clearInterval(roomGallerySlideshowTimer);
+            roomGallerySlideshowTimer = null;
+          }
+          syncGalleryButtons();
+        }
+
+        function toggleRoomSlideshow() {
+          if (!currentRoomGalleryImages.length) return;
+          if (roomGallerySlideshowTimer) {
+            stopRoomSlideshow();
+            return;
+          }
+          roomGallerySlideshowTimer = setInterval(() => {
+            changeRoomGalleryImage(1, { preserveSlideshow: true });
+          }, 3200);
+          syncGalleryButtons();
+        }
+
+        function renderRoomGallery(images, roomTitle) {
+          const main = qs("roomModalImage");
+          const thumbs = qs("roomModalThumbs");
+          const counter = qs("roomGalleryCounter");
+          const fullscreenImage = qs("roomFullscreenImage");
+          const fullscreenThumbs = qs("roomFullscreenThumbs");
+          const fullscreenCounter = qs("roomFullscreenCounter");
+
+          currentRoomGalleryImages = (images || []).filter(Boolean);
+
+          if (!currentRoomGalleryImages.length) {
+            main.src = "";
+            main.alt = roomTitle || "Room";
+            thumbs.innerHTML = "";
+            if (counter) counter.textContent = "0 / 0";
+            if (fullscreenImage) fullscreenImage.src = "";
+            if (fullscreenThumbs) fullscreenThumbs.innerHTML = "";
+            if (fullscreenCounter) fullscreenCounter.textContent = "0 / 0";
+            return;
+          }
+
+          if (currentRoomGalleryIndex >= currentRoomGalleryImages.length) {
+            currentRoomGalleryIndex = 0;
+          }
+          if (currentRoomGalleryIndex < 0) {
+            currentRoomGalleryIndex = currentRoomGalleryImages.length - 1;
+          }
+
+          const activeSrc = currentRoomGalleryImages[currentRoomGalleryIndex];
+          const activeAlt = `${roomTitle || "Room"} photo ${currentRoomGalleryIndex + 1}`;
+
+          main.src = activeSrc;
+          main.alt = activeAlt;
+          if (fullscreenImage) {
+            fullscreenImage.src = activeSrc;
+            fullscreenImage.alt = activeAlt;
+          }
+
+          if (counter) counter.textContent = `${currentRoomGalleryIndex + 1} / ${currentRoomGalleryImages.length}`;
+          if (fullscreenCounter) fullscreenCounter.textContent = `${currentRoomGalleryIndex + 1} / ${currentRoomGalleryImages.length}`;
+
+          thumbs.innerHTML = currentRoomGalleryImages.map((src, index) => `
+            <img
+              src="${src}"
+              alt="${escapeHtml(roomTitle || "Room")} photo ${index + 1}"
+              class="room-gallery-thumb ${index === currentRoomGalleryIndex ? "active" : ""}"
+              data-gallery-index="${index}"
+            >
+          `).join("");
+
+          fullscreenThumbs.innerHTML = currentRoomGalleryImages.map((src, index) => `
+            <img
+              src="${src}"
+              alt="${escapeHtml(roomTitle || "Room")} photo ${index + 1}"
+              class="${index === currentRoomGalleryIndex ? "active" : ""}"
+              data-gallery-index="${index}"
+            >
+          `).join("");
+
+          [...thumbs.querySelectorAll(".room-gallery-thumb"), ...fullscreenThumbs.querySelectorAll("img")].forEach((thumb) => {
+            thumb.addEventListener("click", () => {
+              currentRoomGalleryIndex = Number(thumb.dataset.galleryIndex || 0);
+              renderRoomGallery(currentRoomGalleryImages, roomTitle);
+            });
+          });
+
+          syncGalleryButtons();
+        }
+
+        function changeRoomGalleryImage(step, options = {}) {
+          if (!currentRoomGalleryImages.length) return;
+          currentRoomGalleryIndex = (currentRoomGalleryIndex + step + currentRoomGalleryImages.length) % currentRoomGalleryImages.length;
+          renderRoomGallery(currentRoomGalleryImages, qs("roomModalTitle").textContent);
+          if (!options.preserveSlideshow) stopRoomSlideshow();
+        }
+
+        function bindRoomGalleryInteractions() {
+          const main = qs("roomModalImage");
+          const fullscreenImage = qs("roomFullscreenImage");
+
+          [main, fullscreenImage].forEach((img, idx) => {
+            if (!img) return;
+            img.addEventListener("touchstart", (e) => {
+              roomTouchStartX = e.changedTouches[0].clientX;
+            }, { passive: true });
+
+            img.addEventListener("touchend", (e) => {
+              roomTouchEndX = e.changedTouches[0].clientX;
+              const delta = roomTouchEndX - roomTouchStartX;
+              if (Math.abs(delta) > 45) {
+                changeRoomGalleryImage(delta < 0 ? 1 : -1, { preserveSlideshow: true });
+              }
+            }, { passive: true });
+
+            if (idx === 1) {
+              img.addEventListener("click", () => toggleFullscreenZoom());
+            }
+          });
+        }
+
+        function openRoomFullscreen() {
+          if (!currentRoomGalleryImages.length) return;
+          const modal = qs("roomFullscreenModal");
+          modal.classList.add("active");
+          roomFullscreenZoomed = false;
+          qs("roomFullscreenImage").classList.remove("zoomed");
+          renderRoomGallery(currentRoomGalleryImages, qs("roomModalTitle").textContent);
+          document.body.style.overflow = "hidden";
+        }
+
+        function closeRoomFullscreen() {
+          qs("roomFullscreenModal").classList.remove("active");
+          roomFullscreenZoomed = false;
+          qs("roomFullscreenImage").classList.remove("zoomed");
+          document.body.style.overflow = "";
+        }
+
+        function toggleFullscreenZoom() {
+          const image = qs("roomFullscreenImage");
+          if (!qs("roomFullscreenModal").classList.contains("active")) {
+            openRoomFullscreen();
+            return;
+          }
+          roomFullscreenZoomed = !roomFullscreenZoomed;
+          image.classList.toggle("zoomed", roomFullscreenZoomed);
+        }
+
+        function handleFullscreenBackdrop(event) {
+          if (event.target === qs("roomFullscreenModal")) {
+            closeRoomFullscreen();
+          }
+        }
+
+        function openRoomModal(key) {
+          const room = roomData[key];
+          if (!room) return;
+
+          stopRoomSlideshow();
+          currentRoomKey = key;
+          currentRoomGalleryIndex = 0;
+          qs("roomModalTitle").textContent = room.title;
+          renderRoomGallery(getRoomGallery(room), room.title);
+          qs("roomModalDesc").textContent = room.desc;
+          qs("roomModalFeatures").innerHTML = (room.features || []).map(item => `<li>${item}</li>`).join("");
+          qs("roomModalReserveLink").href = `reservation.html?room=${encodeURIComponent(room.title || "")}&roomKey=${encodeURIComponent(key)}`;
+          qs("roomModal").classList.add("active");
+        }
+
+        function closeRoomModal() {
+          qs("roomModal").classList.remove("active");
+          closeRoomFullscreen();
+          stopRoomSlideshow();
+          currentRoomGalleryImages = [];
+          currentRoomGalleryIndex = 0;
+          currentRoomKey = null;
+        }
+
+        function openActivityModalByIndex(index) {
+          const items = advancedState.activities?.items || [];
+          const item = items[index];
+          if (!item) return;
+
+          qs("activityTitle").textContent = item.modalTitle || item.title || "Activity";
+          qs("activityDesc").textContent = item.modalDesc || item.desc || "";
+          qs("activityModal").classList.add("active");
+        }
+
+        function closeActivityModal() {
+          qs("activityModal").classList.remove("active");
+        }
+
+        function toggleMoreRooms() {
+          const extraRooms = document.querySelectorAll(".extra-room");
+          const btn = qs("toggleRoomsBtn");
+          const isOpening = btn.dataset.open !== "true";
+
+          extraRooms.forEach(room => {
+            room.style.display = isOpening ? "block" : "none";
+          });
+
+          btn.textContent = isOpening ? "View Less Rooms" : "View More Rooms";
+          btn.dataset.open = isOpening ? "true" : "false";
+        }
+
+        window.openRoomModal = openRoomModal;
+        window.changeRoomGalleryImage = changeRoomGalleryImage;
+        window.toggleRoomSlideshow = toggleRoomSlideshow;
+        window.openRoomFullscreen = openRoomFullscreen;
+        window.closeRoomFullscreen = closeRoomFullscreen;
+        window.toggleFullscreenZoom = toggleFullscreenZoom;
+        window.handleFullscreenBackdrop = handleFullscreenBackdrop;
+        window.goToOfferReservation = goToOfferReservation;
+        window.closeRoomModal = closeRoomModal;
+        window.openActivityModalByIndex = openActivityModalByIndex;
+        window.closeActivityModal = closeActivityModal;
+        window.toggleMoreRooms = toggleMoreRooms;
+
+        function applySinglesToDOM(sectionKey) {
+          const state = advancedState[sectionKey];
+          if (!state || !state.singles) return;
+
+          Object.entries(state.singles).forEach(([id, value]) => {
+            const el = qs(id);
+            if (!el) return;
+
+            if (el.tagName === "IMG") {
+              el.src = value || "";
+            } else {
+              el.textContent = value || "";
+            }
+          });
+        }
+
+        function renderAboutSection() {
+          applySinglesToDOM("about");
+          const wrap = qs("aboutParagraphsWrap");
+          const items = advancedState.about.items || [];
+          wrap.innerHTML = items.map(item => `<p class="lead">${item.paragraph || ""}</p>`).join("");
+        }
+
+        function goToOfferReservation(index) {
+          const items = advancedState.offers.items || [];
+          const offer = items[index];
+
+          if (!offer) {
+            showToast("Offer not found.");
+            return;
+          }
+
+          const payload = {
+            title: offer.title || "Offer",
+            desc: offer.desc || "",
+            image: offer.image || "",
+            eyebrow: offer.eyebrow || "",
+            buttonText: offer.buttonText || "Reserve Offer",
+            selectedAt: new Date().toISOString()
+          };
+
+          try {
+            localStorage.setItem("luminousSelectedOffer", JSON.stringify(payload));
+          } catch (err) {
+            console.warn("Could not store selected offer.", err);
+          }
+
+          showToast(`${payload.title} selected.`);
+
+          const params = new URLSearchParams({
+            selectedOffer: payload.title
+          });
+
+          setTimeout(() => {
+            window.location.href = `reservation.html?${params.toString()}`;
+          }, 250);
+        }
+
+        function renderOffersSection() {
+          applySinglesToDOM("offers");
+          const items = advancedState.offers.items || [];
+          const grid = qs("offersGrid");
+
+          grid.innerHTML = items.map((item, index) => {
+            const isMain = index === 0;
+            const outerClass = isMain ? "promo-main" : "promo-side";
+            return `
+              <div class="${outerClass}">
+                <img src="${item.image || ""}" alt="${escapeHtml(item.title || "Offer")}">
+                <div class="promo-overlay">
+                  ${item.eyebrow ? `<div class="eyebrow" style="color:#f7e7a8;margin-bottom:6px;">${item.eyebrow}</div>` : ""}
+                  <h3>${item.title || ""}</h3>
+                  <p>${item.desc || ""}</p>
+                  <button class="btn btn-primary" type="button" onclick="goToOfferReservation(${index})">${item.buttonText || (index === 0 ? "Get This Offer" : "Reserve Offer")}</button>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+
+        function renderActivitiesSection() {
+          applySinglesToDOM("activities");
+          const items = advancedState.activities.items || [];
+          const grid = qs("activitiesGrid");
+
+          grid.innerHTML = items.map((item, index) => `
+            <article class="activity-card">
+              <div class="activity-card-media">
+                <button class="activity-card-gear" type="button" onclick="openActivityEditor(${index})">⚙</button>
+                <img src="${item.image || ""}" alt="${escapeHtml(item.title || "Activity")}">
+              </div>
+              <div class="body">
+                <h3>${item.title || ""}</h3>
+                <p class="muted">${item.desc || ""}</p>
+                <button class="btn btn-secondary" type="button" onclick="openActivityModalByIndex(${index})">${item.buttonText || "Learn More"}</button>
+              </div>
+            </article>
+          `).join("");
+        }
+
+        function renderReviewsSection() {
+          applySinglesToDOM("reviews");
+          const items = advancedState.reviews.items || [];
+          const grid = qs("reviewsGrid");
+
+          grid.innerHTML = items.map(item => `
+            <div class="testimonial">
+              <div class="stars">${item.stars || "★★★★★"}</div>
+              <p>${item.text || ""}</p>
+              <strong>${item.name || ""}</strong>
+            </div>
+          `).join("");
+        }
+
+        function renderHomeSection() {
+          applySinglesToDOM("home");
+        }
+
+        function renderRoomsHeaderSection() {
+          applySinglesToDOM("roomsHeader");
+        }
+
+        function renderContactSection() {
+          applySinglesToDOM("contact");
+        }
+
+        function renderSection(sectionKey) {
+          if (sectionKey === "home") renderHomeSection();
+          if (sectionKey === "about") renderAboutSection();
+          if (sectionKey === "roomsHeader") renderRoomsHeaderSection();
+          if (sectionKey === "offers") renderOffersSection();
+          if (sectionKey === "activities") renderActivitiesSection();
+          if (sectionKey === "reviews") renderReviewsSection();
+          if (sectionKey === "contact") renderContactSection();
+        }
+
+        function renderAllAdvancedSections() {
+          renderHomeSection();
+          renderAboutSection();
+          renderRoomsHeaderSection();
+          renderOffersSection();
+          renderActivitiesSection();
+          renderReviewsSection();
+          renderContactSection();
+        }
+
+        function buildSingleFieldHTML(sectionKey) {
+          const config = advancedEditorConfig[sectionKey];
+          const state = advancedState[sectionKey];
+
+          return (config.singles || []).map(field => {
+            const value = state.singles?.[field.key] || "";
+
+            if (field.type === "textarea") {
+              return `
+                <div class="editor-field">
+                  <label>${field.label}</label>
+                  <textarea data-single-key="${field.key}">${escapeHtml(value)}</textarea>
+                </div>
+              `;
+            }
+
+            return `
+              <div class="editor-field">
+                <label>${field.label}</label>
+                <input type="text" data-single-key="${field.key}" value="${escapeHtml(value)}">
+              </div>
+            `;
+          }).join("");
+        }
+
+        function buildRepeaterFieldHTML(field, value = "") {
+          if (field.type === "textarea") {
+            return `
+              <div class="editor-field">
+                <label>${field.label}</label>
+                <textarea data-item-key="${field.key}">${escapeHtml(value)}</textarea>
+              </div>
+            `;
+          }
+
+          return `
+            <div class="editor-field">
+              <label>${field.label}</label>
+              <input type="text" data-item-key="${field.key}" value="${escapeHtml(value)}">
+            </div>
+          `;
+        }
+
+        function buildRepeaterHTML(sectionKey) {
+          const config = advancedEditorConfig[sectionKey];
+          if (!config.repeater) return "";
+
+          const items = advancedState[sectionKey].items || [];
+
+          return items.map((item, index) => `
+            <div class="editor-card" data-editor-item-index="${index}">
+              <div class="editor-card-head">
+                <strong>${config.repeater.label} ${index + 1}</strong>
+                <button type="button" class="editor-remove-btn" onclick="removeAdvancedItem(${index})">− Remove</button>
+              </div>
+              ${config.repeater.fields.map(field => buildRepeaterFieldHTML(field, item[field.key] || "")).join("")}
+            </div>
+          `).join("");
+        }
+
+        function openAdvancedSection(sectionKey) {
+          const config = advancedEditorConfig[sectionKey];
+          if (!config) return;
+
+          currentAdvancedSectionKey = sectionKey;
+          qs("adminPanelTitle").textContent = config.label;
+          qs("adminPanelSubtitle").textContent = `Editing ${config.label}`;
+          qs("adminPanelEmpty").style.display = "none";
+          qs("adminEditorFormWrap").style.display = "block";
+          qs("addRepeaterBtn").style.display = config.repeater ? "inline-flex" : "none";
+          qs("adminEditorFields").innerHTML = `${buildSingleFieldHTML(sectionKey)}${buildRepeaterHTML(sectionKey)}`;
+          qs("adminEditorPanel").classList.add("open");
+        }
+
+        function readSinglesFromPanel() {
+          const inputs = [...qs("adminEditorFields").querySelectorAll("[data-single-key]")];
+          const singles = {};
+          inputs.forEach(input => {
+            singles[input.dataset.singleKey] = input.value.trim();
+          });
+          return singles;
+        }
+
+        function readItemsFromPanel(sectionKey) {
+          const config = advancedEditorConfig[sectionKey];
+          if (!config.repeater) return [];
+
+          const cards = [...qs("adminEditorFields").querySelectorAll("[data-editor-item-index]")];
+          return cards.map(card => {
+            const item = {};
+            const fields = [...card.querySelectorAll("[data-item-key]")];
+            fields.forEach(field => {
+              item[field.dataset.itemKey] = field.value.trim();
+            });
+            return item;
+          });
+        }
+
+        function addAdvancedItem() {
+          if (!currentAdvancedSectionKey) return;
+          const config = advancedEditorConfig[currentAdvancedSectionKey];
+          if (!config.repeater) return;
+
+          const blankItem = {};
+          config.repeater.fields.forEach(field => {
+            blankItem[field.key] = "";
+          });
+
+          advancedState[currentAdvancedSectionKey].items.push(blankItem);
+          openAdvancedSection(currentAdvancedSectionKey);
+        }
+
+        function removeAdvancedItem(index) {
+          if (!currentAdvancedSectionKey) return;
+          advancedState[currentAdvancedSectionKey].items.splice(index, 1);
+          openAdvancedSection(currentAdvancedSectionKey);
+        }
+
+        async function saveAdvancedSection() {
+          if (!currentAdvancedSectionKey || !currentUser) {
+            showToast("You must be logged in first.");
+            return;
+          }
+
+          const sectionKey = currentAdvancedSectionKey;
+          const config = advancedEditorConfig[sectionKey];
+
+          advancedState[sectionKey].singles = readSinglesFromPanel();
+          if (config.repeater) {
+            advancedState[sectionKey].items = readItemsFromPanel(sectionKey);
+          }
+
+          try {
+            saveAdvancedEditorState();
+            renderSection(sectionKey);
+            showToast("Section saved successfully.");
+          } catch (err) {
+            console.error("SAVE ERROR:", err);
+            showToast(err?.message || "Failed to save section.");
+          }
+        }
+
+        async function loadAdvancedEditorData() {
+          advancedState.home = clone(defaultAdvancedState.home);
+          advancedState.about = clone(defaultAdvancedState.about);
+          advancedState.roomsHeader = clone(defaultAdvancedState.roomsHeader);
+          advancedState.offers = clone(defaultAdvancedState.offers);
+          advancedState.activities = clone(defaultAdvancedState.activities);
+          advancedState.reviews = clone(defaultAdvancedState.reviews);
+          advancedState.contact = clone(defaultAdvancedState.contact);
+
+          try {
+            const saved = readStorage(STORAGE_KEYS.advancedEditor, null);
+            if (!saved) return;
+            Object.keys(saved).forEach(key => {
+              if (advancedState[key]) {
+                advancedState[key] = {
+                  ...advancedState[key],
+                  ...saved[key],
+                  singles: {
+                    ...(advancedState[key].singles || {}),
+                    ...(saved[key].singles || {})
+                  },
+                  items: Array.isArray(saved[key].items)
+                    ? saved[key].items
+                    : (advancedState[key].items || [])
+                };
+              }
+            });
+          } catch (err) {
+            console.error("Failed to load advanced editor data:", err);
+          }
+        }
+
+        const roomCardIdMap = {
+          solo: { tag: "soloCardTag", image: "soloCardImage", title: "soloCardTitle", price: "soloCardPrice", desc: "soloCardDesc", meta1: "soloCardMeta1", meta2: "soloCardMeta2", meta3: "soloCardMeta3" },
+          premier: { tag: "premierCardTag", image: "premierCardImage", title: "premierCardTitle", price: "premierCardPrice", desc: "premierCardDesc", meta1: "premierCardMeta1", meta2: "premierCardMeta2", meta3: "premierCardMeta3" },
+          executive: { tag: "executiveCardTag", image: "executiveCardImage", title: "executiveCardTitle", price: "executiveCardPrice", desc: "executiveCardDesc", meta1: "executiveCardMeta1", meta2: "executiveCardMeta2", meta3: "executiveCardMeta3" },
+          family: { tag: "familyCardTag", image: "familyCardImage", title: "familyCardTitle", price: "familyCardPrice", desc: "familyCardDesc", meta1: "familyCardMeta1", meta2: "familyCardMeta2", meta3: "familyCardMeta3" },
+          royal: { tag: "royalCardTag", image: "royalCardImage", title: "royalCardTitle", price: "royalCardPrice", desc: "royalCardDesc", meta1: "royalCardMeta1", meta2: "royalCardMeta2", meta3: "royalCardMeta3" },
+          presidential: { tag: "presidentialCardTag", image: "presidentialCardImage", title: "presidentialCardTitle", price: "presidentialCardPrice", desc: "presidentialCardDesc", meta1: "presidentialCardMeta1", meta2: "presidentialCardMeta2", meta3: "presidentialCardMeta3" },
+          ocean: { tag: "oceanCardTag", image: "oceanCardImage", title: "oceanCardTitle", price: "oceanCardPrice", desc: "oceanCardDesc", meta1: "oceanCardMeta1", meta2: "oceanCardMeta2", meta3: "oceanCardMeta3" },
+          skyline: { tag: "skylineCardTag", image: "skylineCardImage", title: "skylineCardTitle", price: "skylineCardPrice", desc: "skylineCardDesc", meta1: "skylineCardMeta1", meta2: "skylineCardMeta2", meta3: "skylineCardMeta3" }
+        };
+
+        function syncRoomCardsFromRoomData() {
+          Object.keys(roomCardIdMap).forEach(roomKey => {
+            const room = roomData[roomKey];
+            const map = roomCardIdMap[roomKey];
+            if (!room || !map) return;
+
+            if (qs(map.tag)) qs(map.tag).textContent = room.tag || "";
+            if (qs(map.image)) qs(map.image).src = room.image || "";
+            if (qs(map.title)) qs(map.title).textContent = room.title || "";
+            if (qs(map.price)) qs(map.price).textContent = room.price || "";
+            if (qs(map.desc)) qs(map.desc).textContent = room.desc || "";
+            if (qs(map.meta1)) qs(map.meta1).textContent = room.meta?.[0] || "";
+            if (qs(map.meta2)) qs(map.meta2).textContent = room.meta?.[1] || "";
+            if (qs(map.meta3)) qs(map.meta3).textContent = room.meta?.[2] || "";
+          });
+        }
+
+        function openRoomEditor(roomKey) {
+          if (!document.body.classList.contains("admin-enabled")) return;
+          if (!document.body.classList.contains("edit-mode")) return;
+
+          const room = roomData[roomKey];
+          if (!room) return;
+
+          currentEditingRoomKey = roomKey;
+          qs("roomEditorTitle").textContent = `Edit ${room.title}`;
+          qs("editRoomTag").value = room.tag || "";
+          qs("editRoomTitle").value = room.title || "";
+          qs("editRoomPrice").value = room.price || "";
+          qs("editRoomImage").value = room.image || "";
+          qs("editRoomGallery1").value = room.gallery?.[0] || room.image || "";
+          qs("editRoomGallery2").value = room.gallery?.[1] || "";
+          qs("editRoomGallery3").value = room.gallery?.[2] || "";
+          qs("editRoomGallery4").value = room.gallery?.[3] || "";
+          qs("editRoomDesc").value = room.desc || "";
+          qs("editRoomMeta1").value = room.meta?.[0] || "";
+          qs("editRoomMeta2").value = room.meta?.[1] || "";
+          qs("editRoomMeta3").value = room.meta?.[2] || "";
+          qs("editRoomFeature1").value = room.features?.[0] || "";
+          qs("editRoomFeature2").value = room.features?.[1] || "";
+          qs("editRoomFeature3").value = room.features?.[2] || "";
+          qs("editRoomFeature4").value = room.features?.[3] || "";
+          qs("editRoomFeature5").value = room.features?.[4] || "";
+          qs("editRoomFeature6").value = room.features?.[5] || "";
+          qs("roomEditorModal").classList.add("active");
+        }
+
+        function closeRoomEditor() {
+          qs("roomEditorModal").classList.remove("active");
+          currentEditingRoomKey = null;
+        }
+
+        async function saveRoomEditor() {
+          if (!currentEditingRoomKey || !currentUser) return;
+
+          const updatedRoom = {
+            tag: qs("editRoomTag").value.trim(),
+            title: qs("editRoomTitle").value.trim(),
+            price: qs("editRoomPrice").value.trim(),
+            image: qs("editRoomImage").value.trim(),
+            gallery: [
+              qs("editRoomGallery1").value.trim(),
+              qs("editRoomGallery2").value.trim(),
+              qs("editRoomGallery3").value.trim(),
+              qs("editRoomGallery4").value.trim()
+            ].filter(Boolean),
+            desc: qs("editRoomDesc").value.trim(),
+            meta: [
+              qs("editRoomMeta1").value.trim(),
+              qs("editRoomMeta2").value.trim(),
+              qs("editRoomMeta3").value.trim()
+            ],
+            features: [
+              qs("editRoomFeature1").value.trim(),
+              qs("editRoomFeature2").value.trim(),
+              qs("editRoomFeature3").value.trim(),
+              qs("editRoomFeature4").value.trim(),
+              qs("editRoomFeature5").value.trim(),
+              qs("editRoomFeature6").value.trim()
+            ].filter(Boolean)
+          };
+
+          try {
+            roomData[currentEditingRoomKey] = updatedRoom;
+            saveRoomState();
+            syncRoomCardsFromRoomData();
+            closeRoomEditor();
+            showToast("Room updated successfully.");
+          } catch (err) {
+            console.error(err);
+            showToast(err?.message || "Failed to save room.");
+          }
+        }
+
+        function mergeRoomDataWithGalleryFallback(defaultRooms, savedRooms) {
+          if (!savedRooms || typeof savedRooms !== "object") return defaultRooms;
+
+          const merged = { ...defaultRooms };
+
+          Object.keys(savedRooms).forEach((key) => {
+            const defaultRoom = defaultRooms[key] || {};
+            const savedRoom = savedRooms[key] || {};
+            const defaultGallery = Array.isArray(defaultRoom.gallery) ? defaultRoom.gallery.filter(Boolean) : [];
+            const savedGallery = Array.isArray(savedRoom.gallery) ? savedRoom.gallery.filter(Boolean) : [];
+
+            const finalGallery = savedGallery.length > 1
+              ? savedGallery
+              : defaultGallery.length > 1
+              ? defaultGallery
+              : [savedRoom.image || defaultRoom.image].filter(Boolean);
+
+            merged[key] = {
+              ...defaultRoom,
+              ...savedRoom,
+              gallery: finalGallery,
+              image: savedRoom.image || defaultRoom.image || finalGallery[0] || ""
+            };
+          });
+
+          Object.keys(merged).forEach((key) => {
+            const room = merged[key] || {};
+            const gallery = Array.isArray(room.gallery) ? room.gallery.filter(Boolean) : [];
+            if (!gallery.length && room.image) {
+              room.gallery = [room.image];
+            } else if (gallery.length) {
+              room.gallery = gallery;
+              if (!room.image) room.image = gallery[0];
+            }
+          });
+
+          return merged;
+        }
+
+        async function loadRoomData() {
+          try {
+            const savedRooms = readStorage(STORAGE_KEYS.roomData, null);
+            if (!savedRooms) return;
+            roomData = mergeRoomDataWithGalleryFallback(roomData, savedRooms);
+          } catch (err) {
+            console.error("Failed to load room data:", err);
+          }
+        }
+
+        function openActivityEditor(index) {
+          if (!document.body.classList.contains("admin-enabled")) return;
+          if (!document.body.classList.contains("edit-mode")) return;
+
+          const items = advancedState.activities?.items || [];
+          const item = items[index];
+          if (!item) return;
+
+          currentEditingActivityIndex = index;
+
+          qs("activityEditorTitle").textContent = `Edit ${item.title || "Activity"}`;
+          qs("editActivityImage").value = item.image || "";
+          qs("editActivityTitle").value = item.title || "";
+          qs("editActivityDesc").value = item.desc || "";
+          qs("editActivityButtonText").value = item.buttonText || "";
+          qs("editActivityModalTitle").value = item.modalTitle || "";
+          qs("editActivityModalDesc").value = item.modalDesc || "";
+
+          qs("activityEditorModal").classList.add("active");
+        }
+
+        function closeActivityEditor() {
+          qs("activityEditorModal").classList.remove("active");
+          currentEditingActivityIndex = null;
+        }
+
+        async function saveActivityEditor() {
+          if (currentEditingActivityIndex === null || !currentUser) {
+            showToast("You must be logged in first.");
+            return;
+          }
+
+          const items = advancedState.activities?.items || [];
+          if (!items[currentEditingActivityIndex]) return;
+
+          items[currentEditingActivityIndex] = {
+            ...items[currentEditingActivityIndex],
+            image: qs("editActivityImage").value.trim(),
+            title: qs("editActivityTitle").value.trim(),
+            desc: qs("editActivityDesc").value.trim(),
+            buttonText: qs("editActivityButtonText").value.trim(),
+            modalTitle: qs("editActivityModalTitle").value.trim(),
+            modalDesc: qs("editActivityModalDesc").value.trim()
+          };
+
+          try {
+            saveAdvancedEditorState();
+            renderActivitiesSection();
+            closeActivityEditor();
+            showToast("Activity updated successfully.");
+          } catch (err) {
+            console.error("ACTIVITY SAVE ERROR:", err);
+            showToast(err?.message || "Failed to save activity.");
+          }
+        }
+
+        window.openRoomEditor = openRoomEditor;
+        window.closeRoomEditor = closeRoomEditor;
+        window.saveRoomEditor = saveRoomEditor;
+        window.openActivityEditor = openActivityEditor;
+        window.closeActivityEditor = closeActivityEditor;
+        window.saveActivityEditor = saveActivityEditor;
+        window.addAdvancedItem = addAdvancedItem;
+        window.removeAdvancedItem = removeAdvancedItem;
+        window.saveAdvancedSection = saveAdvancedSection;
+        window.toggleAdminEditorPanel = toggleAdminEditorPanel;
+        window.closeAdminEditorPanel = closeAdminEditorPanel;
+
+        function setLoggedOut() {
+          qs("loginBtn").style.display = "inline-flex";
+          qs("userMenuWrap").style.display = "none";
+          qs("adminDashboardLink").style.display = "none";
+          qs("pendingBtn").style.display = "block";
+          qs("historyBtn").style.display = "block";
+          qs("reserveNowLink").style.display = "block";
+          document.body.classList.remove("admin-enabled");
+          document.body.classList.remove("edit-mode");
+          isEditMode = false;
+          updateEditModeUI();
+          showAdminLauncher(false);
+          closeAdminEditorPanel();
+          setAdminPanelEmpty();
+          currentUser = null;
+        }
+
+        function setLoggedIn(name, isAdmin = false) {
+          qs("loginBtn").style.display = "none";
+          qs("userMenuWrap").style.display = "block";
+          qs("userFirstName").textContent = name.split(" ")[0] || "User";
+          qs("userAvatar").textContent = (name[0] || "U").toUpperCase();
+          qs("adminDashboardLink").style.display = isAdmin ? "block" : "none";
+          qs("pendingBtn").style.display = isAdmin ? "none" : "block";
+          qs("historyBtn").style.display = isAdmin ? "none" : "block";
+          qs("reserveNowLink").style.display = isAdmin ? "none" : "block";
+          document.body.classList.toggle("admin-enabled", isAdmin);
+          showAdminLauncher(isAdmin);
+
+          if (!isAdmin) {
+            isEditMode = false;
+            document.body.classList.remove("edit-mode");
+          }
+
+          updateEditModeUI();
+        }
+
+        function toggleUserDropdown() {
+          const dropdown = qs("userDropdown");
+          dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        async function loadUserBookings(type = "history") {
+          if (!currentUser) return;
+
+          const tbody = qs("userBookingsBody");
+          const title = qs("userBookingsTitle");
+
+          title.textContent = type === "pending" ? "Pending Bookings" : "Booking History";
+          tbody.innerHTML = `<tr><td colspan="5">Loading...</td></tr>`;
+
+          try {
+            const reservations = getReservations();
+
+            if (!reservations.length) {
+              tbody.innerHTML = `<tr><td colspan="5">No bookings found.</td></tr>`;
+              return;
+            }
+
+            const rows = [];
+            reservations.forEach(booking => {
+              if (booking.uid !== currentUser.uid) return;
+              if (type === "pending" && booking.status !== "pending") return;
+              if (type === "history" && booking.status === "pending") return;
+
+              rows.push(`
+                <tr>
+                  <td>${booking.fullName || "-"}</td>
+                  <td>${booking.roomType || "-"}</td>
+                  <td>${booking.checkIn || "-"}</td>
+                  <td>${booking.checkOut || "-"}</td>
+                  <td><span class="status ${booking.status || "pending"}">${booking.status || "pending"}</span></td>
+                </tr>
+              `);
+            });
+
+            tbody.innerHTML = rows.length ? rows.join("") : `<tr><td colspan="5">No bookings found.</td></tr>`;
+          } catch (err) {
+            console.error(err);
+            tbody.innerHTML = `<tr><td colspan="5">Failed to load bookings.</td></tr>`;
+          }
+        }
+
+        function openUserBookingsModal(type) {
+          loadUserBookings(type);
+          qs("userBookingsModal").classList.add("active");
+        }
+
+        function closeUserBookingsModal() {
+          qs("userBookingsModal").classList.remove("active");
+        }
+
+        document.addEventListener("click", (e) => {
+          const wrap = qs("userMenuWrap");
+          const dropdown = qs("userDropdown");
+          if (wrap && dropdown && !wrap.contains(e.target)) {
+            dropdown.style.display = "none";
+          }
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!document.body.classList.contains("admin-enabled")) return;
+          if (!document.body.classList.contains("edit-mode")) return;
+
+          const section = e.target.closest("[data-admin-section]");
+          const clickedInsidePanel = e.target.closest("#adminEditorPanel");
+          const clickedLauncher = e.target.closest("#adminEditorLauncher");
+          const clickedRoomGear = e.target.closest(".room-card-gear");
+          const clickedActivityGear = e.target.closest(".activity-card-gear");
+          const clickedMenu = e.target.closest("#userMenuWrap");
+          const clickedModal = e.target.closest(".modal");
+
+          if (clickedInsidePanel || clickedLauncher || clickedRoomGear || clickedActivityGear || clickedMenu || clickedModal) return;
+          if (!section) return;
+
+          e.preventDefault();
+          e.stopPropagation();
+          openAdvancedSection(section.dataset.adminSection);
+        }, true);
+
+        qs("userMenuBtn").addEventListener("click", toggleUserDropdown);
+        qs("logoutBtn").addEventListener("click", logoutUser);
+        qs("pendingBtn").addEventListener("click", () => openUserBookingsModal("pending"));
+        qs("historyBtn").addEventListener("click", () => openUserBookingsModal("history"));
+        qs("closeUserBookingsModal").addEventListener("click", closeUserBookingsModal);
+
+        window.addEventListener("keydown", (e) => {
+          const roomModalOpen = qs("roomModal").classList.contains("active");
+          const fullscreenOpen = qs("roomFullscreenModal").classList.contains("active");
+          if (!roomModalOpen && !fullscreenOpen) return;
+          if (e.key === "ArrowLeft") changeRoomGalleryImage(-1, { preserveSlideshow: true });
+          if (e.key === "ArrowRight") changeRoomGalleryImage(1, { preserveSlideshow: true });
+          if (e.key.toLowerCase() === "f") openRoomFullscreen();
+          if (e.key.toLowerCase() === " ") {
+            e.preventDefault();
+            toggleRoomSlideshow();
+          }
+          if (e.key === "Escape") {
+            if (fullscreenOpen) closeRoomFullscreen();
+            else closeRoomModal();
+          }
+        });
+
+        window.addEventListener("click", (e) => {
+          if (e.target === qs("authModal")) closeAuthModal();
+          if (e.target === qs("roomModal")) closeRoomModal();
+          if (e.target === qs("activityModal")) closeActivityModal();
+          if (e.target === qs("userBookingsModal")) closeUserBookingsModal();
+          if (e.target === qs("roomEditorModal")) closeRoomEditor();
+          if (e.target === qs("activityEditorModal")) closeActivityEditor();
+        });
+
+        qs("quickBookingForm").addEventListener("submit", (e) => {
+          e.preventDefault();
+          const checkIn = qs("checkIn").value;
+          const checkOut = qs("checkOut").value;
+          const guestCount = qs("guestCount").value;
+          const roomType = qs("roomTypeSelect").value;
+
+          if (!checkIn || !checkOut) {
+            showToast("Please select your dates first.");
+            return;
+          }
+
+          const params = new URLSearchParams({ checkIn, checkOut, guests: guestCount, roomType });
+          window.location.href = `reservation.html?${params.toString()}`;
+        });
+
+        const sectionIds = ["home", "about", "rooms", "offers", "activities", "reviews"];
+        const navLinks = [...document.querySelectorAll(".nav-links a")];
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const id = entry.target.id;
+            navLinks.forEach(link => {
+              link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+            });
+          });
+        }, { rootMargin: "-40% 0px -45% 0px", threshold: 0.01 });
+
+        sectionIds.forEach(id => {
+          const section = document.getElementById(id);
+          if (section) observer.observe(section);
+        });
+
+        ensureDefaultAdminAccount();
+
+        await loadAdvancedEditorData();
+        await loadRoomData();
+        renderAllAdvancedSections();
+        syncRoomCardsFromRoomData();
+        setAdminPanelEmpty();
+        updateEditModeUI();
+
+        const storedUser = getStoredCurrentUser();
+        if (!storedUser) {
+          setLoggedOut();
+        } else {
+          currentUser = storedUser;
+          setLoggedIn(storedUser.displayName || storedUser.email || "User", storedUser.role === "admin");
+        }
+
+    window.loginWithGoogle = function () {
+      showToast("Google sign-in is removed in this standalone version.");
+    };
+  })();
+  </script>
+</body>
+</html>

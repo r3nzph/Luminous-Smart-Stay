@@ -1,0 +1,2663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luminous Smart Stay - Reservation</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#fff9e8;
+      --bg-soft:#fff4d2;
+      --white:#ffffff;
+      --surface:rgba(255,255,255,0.92);
+      --text:#2b1b05;
+      --muted:#7a6a45;
+      --line:rgba(212,175,55,0.22);
+
+      --primary:#8c0f2e;
+      --primary-2:#b3133e;
+      --primary-dark:#5c081d;
+
+      --gold:#d4af37;
+      --gold-2:#f7e7a8;
+      --gold-soft:rgba(212,175,55,0.30);
+
+      --shadow-sm:0 12px 26px rgba(120,80,10,0.14);
+      --shadow-md:0 20px 46px rgba(120,80,10,0.20);
+      --shadow-lg:0 30px 80px rgba(90,60,10,0.30);
+      --shadow-xl:0 34px 100px rgba(90,60,10,0.32);
+
+      --radius-sm:12px;
+      --radius-md:20px;
+      --radius-lg:28px;
+
+      --nav-height:72px;
+      --container:1240px;
+
+      --header-h:0px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html, body{
+      width:100%;
+      min-height:100%;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Montserrat',sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(212, 175, 55, 0.25), transparent 35%),
+        radial-gradient(circle at top right, rgba(179, 19, 62, 0.10), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(212, 175, 55, 0.18), transparent 38%),
+        linear-gradient(to bottom, #fff9e8, #fff4d2 48%, #fff0c3);
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    button,
+    input,
+    select,
+    textarea{
+      font:inherit;
+      font-family:'Montserrat',sans-serif;
+    }
+
+    .container{
+      width:min(var(--container), calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .section-shell{
+      width:min(var(--container), calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .section-edit-wrap{
+      position:relative;
+    }
+
+    h1,h2,h3,.brand{
+      font-family:'Playfair Display',serif;
+      letter-spacing:0.01em;
+    }
+
+    p{
+      font-size:16px;
+    }
+
+    /* ================= HEADER ================= */
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      gap:18px;
+      padding:14px 26px;
+      background:rgba(255, 251, 240, 0.88);
+      border-bottom:1px solid rgba(212,175,55,0.20);
+      box-shadow:0 8px 24px rgba(90,60,10,0.10);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      transition:transform 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .header-left{ justify-self:start; }
+    .nav-links{ justify-self:center; }
+    header > div:last-child{ justify-self:end; }
+
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .header-left img{
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      object-fit:cover;
+      box-shadow:var(--shadow-sm);
+      transition:transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .header-left:hover img{
+      transform:scale(1.05);
+      box-shadow:var(--shadow-md);
+    }
+
+    .header-left div{
+      display:flex;
+      flex-direction:column;
+      line-height:1.15;
+    }
+
+    .header-left div span:first-child{
+      font-family:'Playfair Display', serif;
+      font-weight:800;
+      font-size:1.45rem;
+      color:var(--primary);
+      letter-spacing:0.01em;
+    }
+
+    .header-left div span:last-child{
+      font-size:0.78rem;
+      color:var(--muted);
+      margin-top:3px;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .nav-links a{
+      position:relative;
+      color:#3a302c;
+      font-weight:500;
+      font-size:0.92rem;
+      padding:10px 14px;
+      border-radius:999px;
+      transition:0.25s ease;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .nav-links a:hover{
+      background:linear-gradient(135deg, rgba(212,175,55,0.24), rgba(179,19,62,0.12));
+      color:var(--primary);
+      transform:translateY(-1px);
+    }
+
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:16px;
+      right:16px;
+      bottom:8px;
+      height:2px;
+      background:linear-gradient(to right, var(--gold), transparent);
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform 0.25s ease;
+      border-radius:2px;
+    }
+
+    .nav-links a:hover::after{
+      transform:scaleX(1);
+    }
+
+    header.hide{
+      transform:translateY(-110%);
+    }
+
+    header.scrolled{
+      background:rgba(255,255,255,0.92);
+      box-shadow:0 10px 30px rgba(20,14,11,0.08);
+    }
+
+    .login-btn{
+      padding:11px 18px;
+      border:none;
+      border-radius:999px;
+      background:linear-gradient(135deg, #9b7a1a, #c9a227);
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(120,80,10,0.14);
+      transition:0.25s ease;
+    }
+
+    .login-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(212,175,55,0.18);
+    }
+
+    .user-menu-btn{
+      padding:8px 12px 8px 8px;
+      border:none;
+      border-radius:999px;
+      background:rgba(255,255,255,0.96);
+      color:var(--primary);
+      font-weight:800;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(123,15,45,0.10);
+      transition:0.25s ease;
+    }
+
+    .user-menu-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:var(--shadow-sm);
+    }
+
+    .user-avatar{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      background:linear-gradient(135deg, var(--gold), #fff1c8);
+      color:#111;
+      font-weight:800;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .user-dropdown{
+      display:none;
+      position:absolute;
+      right:0;
+      top:48px;
+      min-width:200px;
+      background:rgba(255,255,255,0.98);
+      border:1px solid rgba(123,15,45,0.10);
+      border-radius:16px;
+      padding:10px;
+      box-shadow:var(--shadow-md);
+      z-index:6000;
+      animation:fadeUp 0.24s ease;
+    }
+
+    .dropdown-btn{
+      width:100%;
+      padding:11px 12px;
+      border:none;
+      border-radius:12px;
+      font-weight:800;
+      cursor:pointer;
+      text-align:left;
+      transition:0.22s ease;
+    }
+
+    .dropdown-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .dropdown-btn.secondary{
+      background:#faf6f1;
+      color:var(--primary);
+      margin-bottom:8px;
+    }
+
+    .dropdown-btn.primary{
+      background:linear-gradient(135deg, var(--primary-dark), var(--primary), var(--primary-2));
+      color:#fff;
+    }
+
+    /* ================= ADMIN UI ================= */
+
+    .admin-launcher{
+      position:fixed;
+      left:18px;
+      bottom:18px;
+      z-index:1800;
+      display:none;
+    }
+
+    .admin-launcher-btn{
+      border:none;
+      border-radius:999px;
+      padding:14px 18px;
+      background:linear-gradient(135deg, var(--primary), var(--gold));
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:var(--shadow-lg);
+    }
+
+    .admin-section-toast{
+      position:fixed;
+      left:18px;
+      bottom:78px;
+      z-index:1800;
+      background:rgba(26,22,20,0.94);
+      color:#fff;
+      padding:12px 14px;
+      border-radius:12px;
+      box-shadow:var(--shadow-lg);
+      font-size:0.9rem;
+      display:none;
+    }
+
+    .admin-panel{
+      position:fixed;
+      top:0;
+      right:-470px;
+      width:min(470px, 100%);
+      height:100vh;
+      background:rgba(255,255,255,0.98);
+      backdrop-filter:blur(18px);
+      z-index:1900;
+      box-shadow:-18px 0 60px rgba(0,0,0,0.18);
+      border-left:1px solid rgba(212,175,55,0.20);
+      transition:right 0.28s ease;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .admin-panel.open{
+      right:0;
+    }
+
+    .admin-panel-header{
+      padding:20px 18px 14px;
+      border-bottom:1px solid rgba(212,175,55,0.14);
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    .admin-panel-kicker{
+      font-size:0.74rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:0.14em;
+      color:var(--gold);
+      margin-bottom:8px;
+    }
+
+    .admin-panel-header h3{
+      color:var(--primary);
+      font-size:1.4rem;
+      margin-bottom:6px;
+    }
+
+    .admin-panel-header p{
+      color:var(--muted);
+      font-size:0.9rem;
+      line-height:1.55;
+    }
+
+    .admin-panel-body{
+      padding:16px;
+      overflow:auto;
+      flex:1;
+    }
+
+    .admin-empty-state{
+      border:1px dashed rgba(212,175,55,0.35);
+      border-radius:18px;
+      padding:18px;
+      color:var(--muted);
+      background:#fffaf0;
+      font-weight:600;
+    }
+
+    .admin-panel-actions-top{
+      margin-bottom:12px;
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .editor-grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .editor-card{
+      border:1px solid rgba(212,175,55,0.18);
+      border-radius:18px;
+      background:linear-gradient(180deg, #fffdf7, #fff8ea);
+      padding:14px;
+      box-shadow:0 6px 14px rgba(120,80,10,0.06);
+    }
+
+    .editor-card-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .editor-card-head strong{
+      color:var(--primary);
+      font-size:0.95rem;
+    }
+
+    .editor-remove-btn{
+      border:none;
+      border-radius:999px;
+      padding:8px 10px;
+      background:#fde2df;
+      color:#a22820;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .editor-field{
+      display:grid;
+      gap:6px;
+      margin-bottom:10px;
+    }
+
+    .editor-field label{
+      font-size:0.72rem;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      font-weight:800;
+      color:#7a5a16;
+    }
+
+    .editor-field input,
+    .editor-field textarea{
+      width:100%;
+      border:1px solid rgba(212,175,55,0.16);
+      background:#fff;
+      color:#1d1b1a;
+      border-radius:12px;
+      min-height:44px;
+      padding:12px 13px;
+      outline:none;
+    }
+
+    .editor-field textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+
+    body.admin-mode [data-admin-section]{
+      position:relative;
+      outline:2px dashed rgba(140, 15, 46, 0.30);
+      outline-offset:8px;
+      cursor:pointer;
+      transition:0.2s ease;
+    }
+
+    body.admin-mode [data-admin-section]:hover{
+      outline-color:rgba(212, 175, 55, 0.95);
+      box-shadow:0 0 0 10px rgba(212, 175, 55, 0.08);
+    }
+
+    .admin-section-badge{
+      position:absolute;
+      top:-14px;
+      left:10px;
+      z-index:60;
+      background:linear-gradient(135deg, var(--primary), #b3133e);
+      color:white;
+      font-size:0.72rem;
+      font-weight:900;
+      letter-spacing:0.05em;
+      padding:7px 10px;
+      border-radius:999px;
+      box-shadow:var(--shadow-sm);
+      display:none;
+      align-items:center;
+      gap:6px;
+      pointer-events:none;
+    }
+
+    body.admin-mode .admin-section-badge{
+      display:inline-flex;
+    }
+
+    .room-card-gear{
+      top:12px;
+      right:12px;
+      width:38px;
+      height:38px;
+      font-size:0.95rem;
+      position:absolute;
+      z-index:20;
+      border:none;
+      border-radius:50%;
+      background:linear-gradient(135deg, var(--gold), var(--primary));
+      color:#fff;
+      cursor:pointer;
+      box-shadow:var(--shadow-md);
+      display:none;
+      align-items:center;
+      justify-content:center;
+    }
+
+    body.admin-mode .room-card-gear{
+      display:inline-flex;
+    }
+
+    /* ================= HERO ================= */
+
+    .hero{
+      position:relative;
+      min-height:calc(92vh - var(--header-h));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      margin:0;
+    }
+
+    section.hero{
+      max-width:none !important;
+      padding:0 !important;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(100deg, rgba(36,13,15,0.58), rgba(36,13,15,0.18) 48%, rgba(36,13,15,0.46)),
+        url('https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center center / cover no-repeat;
+      transform:scale(1.02);
+      z-index:0;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto -80px -120px auto;
+      width:320px;
+      height:320px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(212,175,55,0.25), transparent 66%);
+      filter:blur(10px);
+      z-index:1;
+    }
+
+    .hero-wrap{
+      position:relative;
+      z-index:2;
+      width:min(var(--container), calc(100% - 32px));
+      margin:0 auto;
+      padding:38px 28px;
+    }
+
+    .hero-content{
+      max-width:760px;
+      color:white;
+      padding-left:14px;
+    }
+
+    .hero-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+      text-transform:uppercase;
+      font-size:0.8rem;
+      font-weight:800;
+      letter-spacing:0.18em;
+      color:#f3d27c;
+      opacity:0;
+      transform:translateY(18px);
+      animation:fadeUp 0.8s ease forwards;
+    }
+
+    .hero-kicker::before{
+      content:"";
+      width:42px;
+      height:2px;
+      background:linear-gradient(to right, #f3d27c, transparent);
+    }
+
+    .hero-content h1{
+      font-family:'Playfair Display', serif;
+      font-size:clamp(2.25rem, 5vw, 4.4rem);
+      line-height:1.02;
+      font-weight:700;
+      max-width:680px;
+      margin-bottom:14px;
+      text-shadow:0 10px 24px rgba(0,0,0,0.22);
+      opacity:0;
+      transform:translateY(22px);
+      animation:fadeUp 0.9s ease 0.1s forwards;
+      letter-spacing:1px;
+    }
+
+    .hero-content p{
+      font-size:clamp(0.98rem, 1.6vw, 1.08rem);
+      color:rgba(255,255,255,0.92);
+      max-width:600px;
+      line-height:1.72;
+      margin-bottom:24px;
+      opacity:0;
+      transform:translateY(20px);
+      animation:fadeUp 0.9s ease 0.2s forwards;
+    }
+
+    .hero-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 20px;
+      background:linear-gradient(135deg, #9b7a1a, #c9a227);
+      color:#fff;
+      font-weight:800;
+      border-radius:999px;
+      transition:0.25s ease;
+      box-shadow:0 8px 18px rgba(120,80,10,0.14);
+      opacity:0;
+      transform:translateY(20px);
+      animation:fadeUp 0.9s ease 0.32s forwards;
+    }
+
+    .hero-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(212,175,55,0.18);
+    }
+
+    /* ================= GENERAL SECTIONS ================= */
+
+    section{
+      padding:78px 0;
+    }
+
+    section.standard{
+      width:min(var(--container), calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:28px;
+    }
+
+    .section-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:12px;
+      text-transform:uppercase;
+      font-size:0.74rem;
+      font-weight:800;
+      letter-spacing:0.18em;
+      color:var(--gold);
+    }
+
+    .section-kicker::before{
+      content:"";
+      width:34px;
+      height:2px;
+      background:linear-gradient(to right, var(--gold), transparent);
+    }
+
+    section h2,
+    .section-title{
+      font-family:'Playfair Display', serif;
+      font-size:clamp(1.95rem, 3.2vw, 2.8rem);
+      color:var(--primary);
+      line-height:1.08;
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    section p.section-sub{
+      color:var(--muted);
+      max-width:760px;
+      line-height:1.8;
+    }
+
+    /* ================= ROOM GRID ================= */
+
+    .rooms-wrap{
+      background:linear-gradient(180deg, rgba(255,255,255,0.60), rgba(255,255,255,0.46));
+      border:1px solid rgba(212,175,55,0.18);
+      border-radius:28px;
+      padding:24px;
+      box-shadow:var(--shadow-sm);
+      backdrop-filter:blur(8px);
+    }
+
+    .rooms{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:18px;
+    }
+
+    .room-card{
+      background:linear-gradient(180deg, #ffffff, #fff8e6);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:var(--shadow-sm);
+      cursor:pointer;
+      transition:transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease, filter 0.28s ease;
+      border:1px solid rgba(212,175,55,0.25);
+      position:relative;
+      opacity:0;
+      transform:translateY(26px);
+    }
+
+    .room-card.reveal{
+      animation:fadeUp 0.7s ease forwards;
+    }
+
+    .room-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, transparent, rgba(123,15,45,0.02));
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .room-card:hover{
+      transform:translateY(-8px);
+      box-shadow:var(--shadow-md);
+      filter:saturate(1.03);
+    }
+
+    .room-card.selected{
+      border-color:var(--primary);
+      box-shadow:0 14px 34px rgba(123,15,45,0.22);
+      transform:translateY(-6px);
+    }
+
+    .room-card img{
+      width:100%;
+      height:210px;
+      object-fit:cover;
+      transition:transform 0.45s ease, filter 0.35s ease;
+    }
+
+    .room-card:hover img{
+      transform:scale(1.06);
+      filter:contrast(1.04) saturate(1.05);
+    }
+
+    .card-content{
+      padding:18px;
+      position:relative;
+      z-index:2;
+    }
+
+    .card-content h3{
+      font-family:'Playfair Display', serif;
+      color:var(--primary);
+      margin-bottom:8px;
+      font-size:1.15rem;
+      line-height:1.25;
+      transition:color 0.22s ease;
+    }
+
+    .room-card:hover .card-content h3{
+      color:#5f0b22;
+    }
+
+    .card-content p{
+      font-size:0.93rem;
+      color:var(--muted);
+      line-height:1.65;
+      margin:0 0 10px;
+      text-align:left;
+    }
+
+    .price{
+      font-size:1.35rem;
+      font-weight:800;
+      color:#b48a1e;
+      background:linear-gradient(135deg, rgba(212,175,55,0.25), rgba(140,15,46,0.12));
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      margin-bottom:6px;
+      border:1px solid rgba(212,175,55,0.16);
+      box-shadow:0 4px 10px rgba(120,80,10,0.08);
+    }
+
+    .per-night{
+      font-size:0.8rem;
+      color:#777;
+      margin-bottom:12px;
+      font-weight:600;
+    }
+
+    .features{
+      list-style:none;
+      padding:0;
+      margin-top:10px;
+    }
+
+    .features li{
+      font-size:0.86rem;
+      margin-bottom:6px;
+      display:flex;
+      align-items:flex-start;
+      gap:7px;
+      color:#444;
+      line-height:1.5;
+    }
+
+    .features li::before{
+      content:"★";
+      color:#c89015;
+      flex-shrink:0;
+    }
+
+    /* ================= RESERVATION LAYOUT ================= */
+
+    .reservation-wrap{
+      display:grid;
+      grid-template-columns:1fr 460px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .reservation-info{
+      background:linear-gradient(135deg, #5c081d 0%, #8c0f2e 38%, #d4af37 100%);
+      color:white;
+      border-radius:28px;
+      padding:28px;
+      box-shadow:var(--shadow-xl);
+      min-height:100%;
+      position:relative;
+      overflow:hidden;
+      opacity:0;
+      transform:translateY(24px);
+    }
+
+    .reservation-info.reveal{
+      animation:fadeUp 0.75s ease forwards;
+    }
+
+    .reservation-info::before{
+      content:"";
+      position:absolute;
+      right:-40px;
+      top:-40px;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(243,210,124,0.22), transparent 68%);
+      pointer-events:none;
+    }
+
+    .reservation-info .section-kicker{
+      color:#f3d27c;
+    }
+
+    .reservation-info .section-kicker::before{
+      background:linear-gradient(to right, #f3d27c, transparent);
+    }
+
+    .reservation-info h3{
+      font-family:'Playfair Display', serif;
+      font-size:2rem;
+      line-height:1.08;
+      margin-bottom:12px;
+    }
+
+    .reservation-info p{
+      color:rgba(255,255,255,0.86);
+      text-align:left;
+      margin-bottom:18px;
+    }
+
+    .info-points{
+      display:grid;
+      gap:12px;
+      margin-top:20px;
+    }
+
+    .info-point{
+      padding:14px 16px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.10);
+      border:1px solid rgba(255,255,255,0.14);
+      transition:transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .info-point:hover{
+      transform:translateY(-3px);
+      background:rgba(255,255,255,0.13);
+      border-color:rgba(255,255,255,0.22);
+    }
+
+    .info-point strong{
+      display:block;
+      margin-bottom:4px;
+    }
+
+    form{
+      background:rgba(255,255,255,0.98);
+      backdrop-filter:blur(12px);
+      width:100%;
+      max-width:none;
+      margin:0;
+      padding:28px;
+      border-radius:24px;
+      box-shadow:var(--shadow-md);
+      border:1px solid rgba(212,175,55,0.14);
+      position:relative;
+      overflow:hidden;
+      opacity:0;
+      transform:translateY(24px);
+    }
+
+    form.reveal{
+      animation:fadeUp 0.75s ease 0.08s forwards;
+    }
+
+    form::before{
+      content:"";
+      position:absolute;
+      top:-30px;
+      right:-20px;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(212,175,55,0.14), transparent 70%);
+      pointer-events:none;
+    }
+
+    form h3{
+      font-family:'Playfair Display', serif;
+      font-size:1.9rem;
+      color:var(--primary);
+      margin-bottom:8px;
+      position:relative;
+      z-index:2;
+    }
+
+    .form-sub{
+      color:var(--muted);
+      font-size:0.94rem;
+      margin-bottom:18px;
+      position:relative;
+      z-index:2;
+    }
+
+    form input,
+    form select{
+      width:100%;
+      padding:13px 14px;
+      margin-bottom:14px;
+      border-radius:14px;
+      border:1px solid #ddd;
+      background:#fff;
+      transition:border-color 0.25s ease, box-shadow 0.25s ease, transform 0.18s ease;
+      position:relative;
+      z-index:2;
+    }
+
+    form input:hover,
+    form select:hover{
+      border-color:#cfa85d;
+    }
+
+    form input:focus,
+    form select:focus{
+      border-color:var(--primary);
+      outline:none;
+      box-shadow:0 0 0 3px rgba(123,15,45,0.10);
+      transform:translateY(-1px);
+    }
+
+    form button{
+      width:100%;
+      padding:14px;
+      background:linear-gradient(135deg, #9b7a1a, #c9a227);
+      color:#fff;
+      font-weight:800;
+      border:none;
+      border-radius:14px;
+      cursor:pointer;
+      transition:0.25s ease;
+      box-shadow:0 8px 18px rgba(120,80,10,0.14);
+      position:relative;
+      z-index:2;
+    }
+
+    form button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(212,175,55,0.18);
+    }
+
+    .payment-section{
+      margin:16px 0;
+      padding:16px;
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(212,175,55,0.10), rgba(179,19,62,0.04));
+      border:1px solid rgba(212,175,55,0.14);
+    }
+
+    .payment-title{
+      display:block;
+      font-weight:800;
+      color:var(--primary);
+      margin-bottom:10px;
+      font-size:0.9rem;
+    }
+
+    .payment-options{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:8px;
+    }
+
+    .payment-option{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid #e5e5e5;
+      cursor:pointer;
+      transition:0.2s ease;
+      background:white;
+      font-size:0.85rem;
+    }
+
+    .payment-option img{
+      width:22px;
+      height:22px;
+      object-fit:contain;
+    }
+
+    .payment-option input{
+      accent-color:#7b0f2d;
+      margin:0;
+      width:auto;
+      min-height:auto;
+      padding:0;
+    }
+
+    .payment-option:hover{
+      border-color:var(--gold);
+      background:#fff8eb;
+    }
+
+    .payment-note{
+      font-size:0.75rem;
+      color:#777;
+      margin-top:8px;
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer{
+      text-align:center;
+      padding:22px;
+      background:linear-gradient(135deg, #5c081d 0%, #8c0f2e 38%, #d4af37 100%);
+      color:#fff3d0;
+      font-weight:800;
+      margin-top:24px;
+    }
+
+    /* ================= MODALS ================= */
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(15,12,10,0.56);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:2000;
+    }
+
+    .modal.active{
+      display:flex;
+    }
+
+    .modal-card{
+      width:min(980px, 100%);
+      max-height:92vh;
+      overflow:auto;
+      background:rgba(255,255,255,0.98);
+      backdrop-filter:blur(16px);
+      border-radius:24px;
+      border:1px solid rgba(212,175,55,0.14);
+      box-shadow:0 30px 80px rgba(90,60,10,0.30);
+    }
+
+    .modal-head{
+      padding:20px 22px 10px;
+      display:flex;
+      align-items:start;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .modal-head h3{
+      color:var(--primary);
+      font-size:1.55rem;
+    }
+
+    .modal-body{
+      padding:0 22px 22px;
+    }
+
+    .close-x{
+      width:40px;
+      height:40px;
+      border:none;
+      border-radius:50%;
+      background:rgba(212,175,55,0.12);
+      color:var(--primary);
+      font-size:1.1rem;
+      cursor:pointer;
+      font-weight:800;
+      flex-shrink:0;
+    }
+
+    .close-x:hover{
+      background:rgba(212,175,55,0.20);
+    }
+
+    /* ================= ANIMATIONS ================= */
+
+    .fade-section{
+      opacity:0;
+      transform:translateY(28px);
+    }
+
+    .fade-section.reveal{
+      animation:fadeUp 0.75s ease forwards;
+    }
+
+    @keyframes fadeUp{
+      from{
+        opacity:0;
+        transform:translateY(24px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 1200px){
+      .rooms{
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1040px){
+      .reservation-wrap{
+        grid-template-columns:1fr;
+      }
+
+      .rooms{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+
+      header{
+        grid-template-columns:1fr auto;
+        gap:10px;
+        padding:12px 18px;
+      }
+
+      .nav-links{
+        display:none;
+      }
+    }
+
+    @media (max-width: 640px){
+      .container,
+      .section-shell,
+      section.standard,
+      .hero-wrap{
+        width:min(var(--container), calc(100% - 20px));
+      }
+
+      .hero-wrap{
+        padding:26px 14px;
+      }
+
+      .hero-content{
+        padding-left:0;
+      }
+
+      .hero-content h1{
+        font-size:clamp(1.95rem, 9vw, 3rem);
+      }
+
+      .rooms{
+        grid-template-columns:1fr;
+      }
+
+      .rooms-wrap,
+      .reservation-info,
+      form{
+        padding:18px;
+      }
+
+      .header-left div span:first-child{
+        font-size:1.15rem;
+      }
+
+      .header-left div span:last-child{
+        display:none;
+      }
+
+      .admin-panel{
+        width:100%;
+      }
+
+      .modal-head,
+      .modal-body{
+        padding-left:16px;
+        padding-right:16px;
+      }
+    }
+  
+
+    /* ================= THEME OVERRIDES: GOLD + DEEP RED LUXURY ================= */
+    :root{
+      --bg:#0d0507;
+      --bg-soft:#16080c;
+      --white:#ffffff;
+      --surface:rgba(20,8,11,0.94);
+      --text:#f3e2b7;
+      --muted:#cfb889;
+      --line:rgba(212,175,55,0.18);
+
+      --primary:#8c0f2e;
+      --primary-2:#b3133e;
+      --primary-dark:#4d0718;
+
+      --gold:#d4af37;
+      --gold-2:#f3d27c;
+      --gold-soft:rgba(212,175,55,0.18);
+
+      --shadow-sm:0 12px 26px rgba(0,0,0,0.20);
+      --shadow-md:0 20px 46px rgba(0,0,0,0.30);
+      --shadow-lg:0 30px 80px rgba(0,0,0,0.42);
+      --shadow-xl:0 34px 100px rgba(0,0,0,0.48);
+    }
+
+    body{
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(212,175,55,0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(179,19,62,0.12), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(212,175,55,0.08), transparent 34%),
+        linear-gradient(to bottom, #080304 0%, #120609 42%, #1a070d 100%);
+    }
+
+    header{
+      background:rgba(9,4,6,0.90);
+      border-bottom:1px solid rgba(212,175,55,0.14);
+      box-shadow:0 10px 30px rgba(0,0,0,0.34);
+    }
+
+    header.scrolled{
+      background:rgba(12,5,7,0.95);
+      box-shadow:0 12px 32px rgba(0,0,0,0.40);
+    }
+
+    .header-left div span:first-child,
+    section h2,
+    .section-title,
+    .card-content h3,
+    .modal-head h3,
+    .admin-panel-header h3,
+    form h3{
+      color:var(--gold-2);
+    }
+
+    .header-left div span:last-child,
+    section p.section-sub,
+    .card-content p,
+    .per-night,
+    .payment-note,
+    .admin-panel-header p,
+    .admin-empty-state,
+    .form-sub,
+    .reservation-info p,
+    .info-point span,
+    .features li,
+    .editor-field label + input::placeholder,
+    .editor-field label + textarea::placeholder{
+      color:var(--muted);
+    }
+
+    .nav-links a{
+      color:#f0dcb0;
+    }
+
+    .nav-links a:hover{
+      background:linear-gradient(135deg, rgba(212,175,55,0.14), rgba(179,19,62,0.20));
+      color:var(--gold-2);
+    }
+
+    .login-btn,
+    .hero-btn,
+    form button,
+    .admin-launcher-btn{
+      background:linear-gradient(135deg, #7a0d28 0%, #b3133e 48%, #d4af37 100%);
+      color:#fff6de;
+      box-shadow:0 10px 24px rgba(0,0,0,0.30);
+    }
+
+    .user-menu-btn,
+    .user-dropdown,
+    .dropdown-btn.secondary{
+      background:rgba(22,9,12,0.96);
+      color:var(--gold-2);
+      border:1px solid rgba(212,175,55,0.16);
+    }
+
+    .dropdown-btn.primary{
+      background:linear-gradient(135deg, #7a0d28 0%, #b3133e 48%, #d4af37 100%);
+    }
+
+    .rooms-wrap,
+    form,
+    .modal-card,
+    .admin-panel,
+    .editor-card{
+      background:linear-gradient(180deg, rgba(25,10,14,0.97), rgba(13,5,8,0.98));
+      border:1px solid rgba(212,175,55,0.16);
+      box-shadow:var(--shadow-lg);
+    }
+
+    .room-card{
+      background:linear-gradient(180deg, rgba(30,12,16,0.98), rgba(18,7,10,0.99));
+      border:1px solid rgba(212,175,55,0.18);
+      box-shadow:var(--shadow-md);
+    }
+
+    .room-card::before{
+      background:linear-gradient(180deg, transparent, rgba(140,15,46,0.10));
+    }
+
+    .room-card.selected{
+      border-color:var(--gold);
+      box-shadow:0 16px 36px rgba(212,175,55,0.16);
+    }
+
+    .price{
+      color:#ffe6a0;
+      background:linear-gradient(135deg, rgba(212,175,55,0.14), rgba(179,19,62,0.18));
+      border:1px solid rgba(212,175,55,0.14);
+    }
+
+    .features li{
+      color:#e6d0a1;
+    }
+
+    .features li::before,
+    .section-kicker,
+    .reservation-info .section-kicker,
+    .admin-panel-kicker,
+    .payment-title{
+      color:var(--gold);
+    }
+
+    .section-kicker::before,
+    .reservation-info .section-kicker::before{
+      background:linear-gradient(to right, var(--gold), transparent);
+    }
+
+    .reservation-info{
+      background:
+        radial-gradient(circle at top right, rgba(243,210,124,0.12), transparent 30%),
+        linear-gradient(135deg, #320710 0%, #5c081d 35%, #8c0f2e 68%, #d4af37 100%);
+      color:#fff7ea;
+      box-shadow:var(--shadow-xl);
+    }
+
+    .info-point{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);
+    }
+
+    .info-point:hover{
+      background:rgba(255,255,255,0.10);
+      border-color:rgba(243,210,124,0.24);
+    }
+
+    form input,
+    form select,
+    .editor-field input,
+    .editor-field textarea{
+      background:rgba(255,255,255,0.06);
+      color:#f6e7c2;
+      border:1px solid rgba(212,175,55,0.14);
+    }
+
+    form input:hover,
+    form select:hover,
+    .editor-field input:hover,
+    .editor-field textarea:hover{
+      border-color:rgba(212,175,55,0.28);
+    }
+
+    form input:focus,
+    form select:focus,
+    .editor-field input:focus,
+    .editor-field textarea:focus{
+      border-color:var(--gold);
+      box-shadow:0 0 0 3px rgba(212,175,55,0.10);
+      outline:none;
+    }
+
+    form input::placeholder,
+    .editor-field input::placeholder,
+    .editor-field textarea::placeholder{
+      color:rgba(230,208,161,0.62);
+    }
+
+    .payment-section{
+      background:linear-gradient(180deg, rgba(212,175,55,0.08), rgba(179,19,62,0.08));
+      border:1px solid rgba(212,175,55,0.14);
+    }
+
+    .payment-option{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(212,175,55,0.12);
+      color:#f0dcb0;
+    }
+
+    .payment-option:hover{
+      border-color:var(--gold);
+      background:rgba(212,175,55,0.10);
+    }
+
+    footer{
+      background:linear-gradient(135deg, #2f0610 0%, #710a24 42%, #d4af37 100%);
+      color:#fff0c5;
+    }
+
+    .modal{
+      background:rgba(3,1,2,0.76);
+    }
+
+    .close-x,
+    .editor-remove-btn{
+      background:rgba(212,175,55,0.12);
+      color:var(--gold-2);
+      border:1px solid rgba(212,175,55,0.14);
+    }
+
+    .admin-empty-state{
+      background:rgba(255,255,255,0.03);
+      border:1px dashed rgba(212,175,55,0.24);
+    }
+
+    .admin-section-toast{
+      background:rgba(17,8,11,0.96);
+      color:#fff3d1;
+    }
+
+    .room-card-gear{
+      background:linear-gradient(135deg, #7a0d28 0%, #b3133e 48%, #d4af37 100%);
+    }
+
+    @media (max-width: 640px){
+      header{
+        background:rgba(9,4,6,0.95);
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+<div>
+      <span id="headerBrand">Luminous Smart Stay</span>
+      <span id="headerTagline">Your comfort is our priority</span>
+    </div>
+  </div>
+
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="#rooms">Rooms</a>
+    <a href="#reservation">Reservation</a>
+  </nav>
+
+  <div style="display:flex; align-items:center; gap:12px; position:relative;">
+    <button id="loginBtn" class="login-btn" type="button">LOGIN</button>
+
+    <div id="userMenuWrap" style="display:none; position:relative;">
+      <button id="userMenuBtn" type="button" class="user-menu-btn">
+        <span id="userAvatar" class="user-avatar">U</span>
+        <span id="userFirstName">User</span>
+      </button>
+
+      <div id="userDropdown" class="user-dropdown">
+        <button id="myAccountBtn" class="dropdown-btn secondary">My Account</button>
+        <button id="logoutBtn" class="dropdown-btn primary">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero section-edit-wrap" data-admin-section="hero" data-admin-label="Hero Section">
+  <span class="admin-section-badge">✏ Hero</span>
+  <div class="hero-wrap">
+    <div class="hero-content">
+      <div id="heroKicker" class="hero-kicker">Luxury Reservations</div>
+      <h1 id="heroTitle">Reserve your stay with elegance, comfort, and confidence.</h1>
+      <p id="heroText">Choose your room, lock in your dates, and send your reservation with the same refined red-and-gold style as your homepage.</p>
+      <a href="#reservation" id="heroBtn" class="hero-btn">Reserve Now</a>
+    </div>
+  </div>
+</section>
+
+<section id="rooms" class="standard fade-section section-edit-wrap" data-admin-section="roomsHeader" data-admin-label="Rooms Section Header">
+  <span class="admin-section-badge">✏ Rooms Header</span>
+
+  <div class="section-head">
+    <div>
+      <div id="roomsKicker" class="section-kicker">Room Collection</div>
+      <h2 id="roomsTitle">Choose from our luxury room selection.</h2>
+    </div>
+    <p id="roomsSub" class="section-sub">Select a room below or use the reservation form. Clicking a card still highlights it and automatically fills the room selection, just like your original logic.</p>
+  </div>
+
+  <div class="rooms-wrap">
+    <div class="rooms" id="roomsGrid"></div>
+  </div>
+</section>
+
+<section id="reservation" class="standard fade-section section-edit-wrap" data-admin-section="reservationSection" data-admin-label="Reservation Section">
+  <span class="admin-section-badge">✏ Reservation Section</span>
+
+  <div class="reservation-wrap">
+    <div class="reservation-info">
+      <div id="guideKicker" class="section-kicker">Reservation Guide</div>
+      <h3 id="guideTitle">Your selected luxury stay starts here.</h3>
+      <p id="guideText">Pick your room, enter your details, and submit your reservation request. Your original Firebase saving flow, login check, selected-room sync, and pending status logic all remain intact.</p>
+
+      <div class="info-points" id="guideStepsWrap"></div>
+    </div>
+
+    <form id="reservationForm">
+      <h3 id="formTitle">Make a Reservation</h3>
+      <div id="formSub" class="form-sub">Complete the form below to request your booking.</div>
+
+      <input type="text" id="fullName" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="date" id="checkIn" required>
+      <input type="date" id="checkOut" required>
+
+      <select id="roomType" required>
+        <option value="">Select Room</option>
+      </select>
+
+      <div class="payment-section">
+        <label id="paymentTitle" class="payment-title">Select Payment Method</label>
+        <div id="paymentOptionsWrap" class="payment-options"></div>
+        <p id="paymentNote" class="payment-note">Please choose a payment method before completing your reservation.</p>
+      </div>
+
+      <button id="submitBtnText" type="submit">Reserve Now</button>
+    </form>
+  </div>
+</section>
+
+<footer id="footerText">© 2026 Luminous Smart Stay</footer>
+
+<div id="adminEditorLauncher" class="admin-launcher">
+  <button type="button" class="admin-launcher-btn" onclick="toggleAdminEditorPanel()">✨ Admin Editor</button>
+</div>
+
+<div id="adminSectionToast" class="admin-section-toast">Editing mode is on. Click a highlighted section.</div>
+
+<div id="adminEditorPanel" class="admin-panel">
+  <div class="admin-panel-header">
+    <div>
+      <div class="admin-panel-kicker">Admin Editor</div>
+      <h3 id="adminPanelTitle">Select a section</h3>
+      <p id="adminPanelSubtitle">Click a highlighted section on the page to edit it.</p>
+    </div>
+    <button type="button" class="close-x" onclick="closeAdminEditorPanel()">×</button>
+  </div>
+
+  <div class="admin-panel-body">
+    <div id="adminPanelEmpty" class="admin-empty-state">Click any highlighted section on the page.</div>
+
+    <div id="adminEditorFormWrap" style="display:none;">
+      <div id="adminEditorFields" class="editor-grid"></div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+        <button class="login-btn" type="button" onclick="saveAdvancedSection()">Save Changes</button>
+        <button class="dropdown-btn secondary" type="button" onclick="closeAdminEditorPanel()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="roomEditorModal" class="modal">
+  <div class="modal-card" style="max-width:780px;">
+    <div class="modal-head">
+      <div>
+        <div class="section-kicker">Admin Room Editor</div>
+        <h3 id="roomEditorTitle">Edit Room</h3>
+      </div>
+      <button class="close-x" type="button" onclick="closeRoomEditor()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="editor-grid">
+        <div class="editor-field"><label>Room Name</label><input id="editRoomTitle" type="text"></div>
+        <div class="editor-field"><label>Room Price Label</label><input id="editRoomPrice" type="text"></div>
+        <div class="editor-field"><label>Price Number (for reservation)</label><input id="editRoomPriceNumber" type="number"></div>
+        <div class="editor-field"><label>Image URL</label><input id="editRoomImage" type="text"></div>
+        <div class="editor-field"><label>Description</label><textarea id="editRoomDesc"></textarea></div>
+        <div class="editor-field"><label>Feature 1</label><input id="editRoomFeature1" type="text"></div>
+        <div class="editor-field"><label>Feature 2</label><input id="editRoomFeature2" type="text"></div>
+        <div class="editor-field"><label>Feature 3</label><input id="editRoomFeature3" type="text"></div>
+        <div class="editor-field"><label>Feature 4</label><input id="editRoomFeature4" type="text"></div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+        <button class="login-btn" type="button" onclick="saveRoomEditor()">Save Room</button>
+        <button class="dropdown-btn secondary" type="button" onclick="closeRoomEditor()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="admin-section-toast" style="left:auto; right:18px; bottom:18px; display:none;"></div>
+
+<script>
+function qs(id) {
+  return document.getElementById(id);
+}
+
+const STORAGE_KEYS = {
+  users: "lumiereUsers",
+  currentUser: "lumiereCurrentUser",
+  reservations: "lumiereReservations",
+  reservationAdvancedEditor: "lumiereReservationAdvancedEditor",
+  reservationRooms: "lumiereReservationRooms"
+};
+
+function readStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (err) {
+    console.error(`Failed to read ${key}:`, err);
+    return fallback;
+  }
+}
+
+function writeStorage(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function hashPassword(value = "") {
+  try {
+    return btoa(unescape(encodeURIComponent(value)));
+  } catch (err) {
+    return value;
+  }
+}
+
+function getUsers() {
+  return readStorage(STORAGE_KEYS.users, []);
+}
+
+function saveUsers(users) {
+  writeStorage(STORAGE_KEYS.users, users);
+}
+
+function getStoredCurrentUser() {
+  return readStorage(STORAGE_KEYS.currentUser, null);
+}
+
+function setStoredCurrentUser(user) {
+  if (!user) {
+    localStorage.removeItem(STORAGE_KEYS.currentUser);
+    return;
+  }
+  writeStorage(STORAGE_KEYS.currentUser, user);
+}
+
+function getReservations() {
+  return readStorage(STORAGE_KEYS.reservations, []);
+}
+
+function saveReservations(reservations) {
+  writeStorage(STORAGE_KEYS.reservations, reservations);
+}
+
+function saveAdvancedEditorState() {
+  writeStorage(STORAGE_KEYS.reservationAdvancedEditor, advancedState);
+}
+
+function saveReservationRoomsState() {
+  writeStorage(STORAGE_KEYS.reservationRooms, reservationRooms);
+}
+
+function makeId(prefix = "id") {
+  return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function ensureDefaultAdminAccount() {
+  const users = getUsers();
+  const adminEmail = "admin@admin.com";
+  const adminPassword = hashPassword("admin1234");
+  const existingAdminIndex = users.findIndex(user => (user.email || "").toLowerCase() === adminEmail);
+
+  if (existingAdminIndex >= 0) {
+    users[existingAdminIndex] = {
+      ...users[existingAdminIndex],
+      uid: users[existingAdminIndex].uid || "admin_default_account",
+      name: users[existingAdminIndex].name || "Administrator",
+      email: adminEmail,
+      password: adminPassword,
+      role: "admin"
+    };
+  } else {
+    users.unshift({
+      uid: "admin_default_account",
+      name: "Administrator",
+      email: adminEmail,
+      password: adminPassword,
+      role: "admin",
+      createdAt: 0
+    });
+  }
+
+  saveUsers(users);
+}
+
+function normalizeCurrentUser() {
+  const stored = getStoredCurrentUser();
+  if (!stored || !stored.email) return null;
+
+  const match = getUsers().find(user => (user.email || "").toLowerCase() === String(stored.email).toLowerCase());
+  if (!match) return stored;
+
+  const normalized = {
+    uid: match.uid || stored.uid || makeId("user"),
+    email: match.email || stored.email,
+    displayName: match.name || stored.displayName || stored.email,
+    name: match.name || stored.name || stored.email,
+    role: match.role || stored.role || "user"
+  };
+
+  setStoredCurrentUser(normalized);
+  return normalized;
+}
+
+function downloadReservationFile(reservation) {
+  try {
+    const safeEmail = String(reservation.email || "guest").replace(/[^a-z0-9@._-]/gi, "_");
+    const fileName = `reservation-${safeEmail}-${reservation.createdAt}.json`;
+    const blob = new Blob([JSON.stringify(reservation, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch (err) {
+    console.error("Failed to generate reservation file:", err);
+  }
+}
+
+function showToast(message) {
+  const toast = qs("toast");
+  toast.textContent = message;
+  toast.style.display = "block";
+  setTimeout(() => {
+    toast.style.display = "none";
+  }, 2500);
+}
+
+function escapeHtml(str = "") {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function clone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+const loginBtn = qs("loginBtn");
+const userMenuWrap = qs("userMenuWrap");
+const userMenuBtn = qs("userMenuBtn");
+const userDropdown = qs("userDropdown");
+const userAvatar = qs("userAvatar");
+const userFirstName = qs("userFirstName");
+const logoutBtn = qs("logoutBtn");
+const myAccountBtn = qs("myAccountBtn");
+const roomSelect = qs("roomType");
+const form = qs("reservationForm");
+
+let currentUser = null;
+let currentAdvancedSectionKey = null;
+let currentEditingRoomKey = null;
+const advancedState = {};
+
+const defaultRoomData = {
+  solo: {
+    title: "Luminous Solo Studio",
+    priceText: "₱6,800",
+    priceNumber: 6800,
+    image: "https://i.pinimg.com/736x/9b/83/08/9b8308f3136e9ca741bcd80738ab6559.jpg",
+    desc: "A modern, cozy single-occupancy room designed for comfort and elegance. Warm red and gold accents reflect the Luminous brand identity.",
+    features: ["Single premium bed", "Private bathroom with rainfall shower", "Smart TV", "Access to rooftop pool"]
+  },
+  deluxe: {
+    title: "Deluxe Ocean View Room",
+    priceText: "₱9,800",
+    priceNumber: 9800,
+    image: "https://i.pinimg.com/736x/6a/74/7f/6a747f1dae3337e9fcceed2639f25d40.jpg",
+    desc: "Enjoy calming ocean views from the back-facing window. Designed with floor-to-ceiling glass panels to maximize natural light.",
+    features: ["Queen or twin beds", "Elegant bathroom with glass shower", "Smart TV", "Rooftop pool access"]
+  },
+  premier: {
+    title: "Premier City Lights Room",
+    priceText: "₱10,500",
+    priceNumber: 10500,
+    image: "https://i.pinimg.com/736x/34/17/b0/3417b0d75c1830f95114bb80cf9647bb.jpg",
+    desc: "Front-facing room overlooking the glowing city lights at night. Romantic and vibrant ambiance.",
+    features: ["King-size bed", "Luxury bathroom amenities", "Balcony", "Pool access"]
+  },
+  balcony: {
+    title: "Grand Balcony Room",
+    priceText: "₱14,500",
+    priceNumber: 14500,
+    image: "https://i.pinimg.com/736x/09/0b/45/090b45ddbce8e2707af31e056a79e620.jpg",
+    desc: "Private balcony with your choice of Ocean View (back side) or City Lights View (front side).",
+    features: ["King-size bed", "Private balcony with seating", "Espresso machine", "Pool access"]
+  },
+  family: {
+    title: "Luminous Family Suite",
+    priceText: "₱22,000",
+    priceNumber: 22000,
+    image: "https://i.pinimg.com/736x/b5/42/19/b54219cd6529a5fce63fc76a2c0a31d0.jpg",
+    desc: "Two connected rooms with shared entry. Spacious and comfortable for up to 6 guests.(front side).",
+    features: ["2 Bedrooms", "2 Bathrooms", "2 Smart TVs", "Rooftop pool access"]
+  },
+  jacuzzi: {
+    title: "Prestige Terrace Suite with Private Jacuzzi",
+    priceText: "₱35,000",
+    priceNumber: 35000,
+    image: "https://i.pinimg.com/736x/3b/06/c9/3b06c99e5819fbe2819819d4efbc2056.jpg",
+    desc: "Spacious suite with private terrace overlooking the ocean and skyline. Features a personal outdoor jacuzzi.",
+    features: ["King-size bed", "Private terrace", "Outdoor jacuzzi", "Pool access"]
+  },
+  duplex: {
+    title: "Luminous Royal Duplex Suite",
+    priceText: "₱65,000",
+    priceNumber: 65000,
+    image: "https://i.pinimg.com/736x/6d/a0/4c/6da04c01b556eca363e6ff9bc803d43b.jpg",
+    desc: "Two-level luxury suite with dramatic city and ocean panoramic views.",
+    features: ["King-size bed", "Private terrace with jacuzzi", "Exclusive VIP lounge access", "Pool access"]
+  },
+  presidential: {
+    title: "Luminous Presidential Royal Suite (Largest Room)",
+    priceText: "₱150,000",
+    priceNumber: 150000,
+    image: "https://i.pinimg.com/736x/d5/03/51/d50351de5f0f1d3adfcaad63548c1e4a.jpg",
+    desc: "Our most prestigious suite offering uninterrupted 360° ocean and skyline views. Designed for ultimate luxury and privacy.",
+    features: ["2 Master Bedrooms", "Grand living room", "Smart room automation system", "VIP pool cabana access"]
+  }
+};
+
+let reservationRooms = clone(defaultRoomData);
+
+const defaultAdvancedState = {
+  hero: {
+    singles: {
+      heroKicker: "Luxury Reservations",
+      heroTitle: "Reserve your stay with elegance, comfort, and confidence.",
+      heroText: "Choose your room, lock in your dates, and send your reservation with the same refined red-and-gold style as your homepage.",
+      heroBtn: "Reserve Now"
+    }
+  },
+  roomsHeader: {
+    singles: {
+      roomsKicker: "Room Collection",
+      roomsTitle: "Choose from our luxury room selection.",
+      roomsSub: "Select a room below or use the reservation form. Clicking a card still highlights it and automatically fills the room selection, just like your original logic."
+    }
+  },
+  reservationSection: {
+    singles: {
+      guideKicker: "Reservation Guide",
+      guideTitle: "Your selected luxury stay starts here.",
+      guideText: "Pick your room, enter your details, and submit your reservation request. Your original Firebase saving flow, login check, selected-room sync, and pending status logic all remain intact.",
+      formTitle: "Make a Reservation",
+      formSub: "Complete the form below to request your booking.",
+      paymentTitle: "Select Payment Method",
+      paymentNote: "Please choose a payment method before completing your reservation.",
+      submitBtnText: "Reserve Now"
+    },
+    guideSteps: [
+      { title: "Step 1", text: "Click any room card to auto-select it in the reservation form." },
+      { title: "Step 2", text: "Fill in your name, email, and dates for check-in and check-out." },
+      { title: "Step 3", text: "Submit the form and your reservation will be saved with pending status for admin confirmation." }
+    ],
+    paymentMethods: [
+      { label: "Cash", value: "Cash on Arrival", image: "https://cdn-icons-png.flaticon.com/512/2331/2331941.png" },
+      { label: "GCash", value: "GCash", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8FRBoUSwDVWOLvmFC5NsK19vYrINCaPcNSg&s" },
+      { label: "Maya", value: "Maya", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiwS6EStnZkuJ0ca7iSgRanKZzSdVkdLkPrg&s" },
+      { label: "Card", value: "Card", image: "https://cdn-icons-png.flaticon.com/512/179/179457.png" },
+      { label: "Bank", value: "Bank Transfer", image: "https://cdn-icons-png.flaticon.com/512/2830/2830284.png" }
+    ]
+  },
+  footerSection: {
+    singles: {
+      headerLogo: "https://scontent.fmnl4-7.fna.fbcdn.net/v/t1.15752-9/648236473_1414581097017781_8053990826465043918_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeFxQq4oZFBJxaPpeEUCO32V6ZxoUBFb3C7pnGhQEVvcLoLnub0cxXR8h_ca6bpqR-9-foDiG7wsTl5_LXMMJzdd&_nc_ohc=q-eXPxe1AnIQ7kNvwHvCDNB&_nc_oc=AdmRCDWUnagtzENyHvFqpDX816ei67-h3mCAE_OZupSM6thAz-o6_lx1wffhKKItQ3tAOooxbBndy7xXyDqI-KZA&_nc_zt=23&_nc_ht=scontent.fmnl4-7.fna&_nc_ss=8&oh=03_Q7cD4wGZWqeb4rRur6CBJFZtJcSUsRzlaQoCRjwl7QarsXav5Q&oe=69D8E3A1",
+      headerBrand: "Luminous Smart Stay",
+      headerTagline: "Your comfort is our priority",
+      footerText: "© 2026 Luminous Smart Stay"
+    }
+  }
+};
+
+const advancedEditorConfig = {
+  hero: {
+    label: "Hero Section",
+    singles: [
+      { key: "heroKicker", label: "Hero Kicker", type: "text" },
+      { key: "heroTitle", label: "Hero Title", type: "textarea" },
+      { key: "heroText", label: "Hero Text", type: "textarea" },
+      { key: "heroBtn", label: "Hero Button Text", type: "text" }
+    ]
+  },
+  roomsHeader: {
+    label: "Rooms Section Header",
+    singles: [
+      { key: "roomsKicker", label: "Section Kicker", type: "text" },
+      { key: "roomsTitle", label: "Section Title", type: "textarea" },
+      { key: "roomsSub", label: "Section Description", type: "textarea" }
+    ]
+  },
+  reservationSection: {
+    label: "Reservation Section",
+    singles: [
+      { key: "guideKicker", label: "Guide Kicker", type: "text" },
+      { key: "guideTitle", label: "Guide Title", type: "textarea" },
+      { key: "guideText", label: "Guide Text", type: "textarea" },
+      { key: "formTitle", label: "Form Title", type: "text" },
+      { key: "formSub", label: "Form Subtitle", type: "textarea" },
+      { key: "paymentTitle", label: "Payment Title", type: "text" },
+      { key: "paymentNote", label: "Payment Note", type: "textarea" },
+      { key: "submitBtnText", label: "Submit Button Text", type: "text" }
+    ],
+    repeaters: [
+      {
+        key: "guideSteps",
+        itemLabel: "Guide Step",
+        fields: [
+          { key: "title", label: "Step Title", type: "text" },
+          { key: "text", label: "Step Text", type: "textarea" }
+        ]
+      },
+      {
+        key: "paymentMethods",
+        itemLabel: "Payment Method",
+        fields: [
+          { key: "label", label: "Label", type: "text" },
+          { key: "value", label: "Value Saved", type: "text" },
+          { key: "image", label: "Icon URL", type: "image" }
+        ]
+      }
+    ]
+  },
+  footerSection: {
+    label: "Header + Footer Branding",
+    singles: [
+      { key: "headerLogo", label: "Header Logo URL", type: "image" },
+      { key: "headerBrand", label: "Header Brand", type: "text" },
+      { key: "headerTagline", label: "Header Tagline", type: "text" },
+      { key: "footerText", label: "Footer Text", type: "text" }
+    ]
+  }
+};
+
+function firstNameFromName(fullName) {
+  const n = String(fullName || "").trim();
+  return n ? n.split(/\s+/)[0] : "";
+}
+
+function setLoggedOutUI() {
+  if (loginBtn) loginBtn.style.display = "";
+  if (userMenuWrap) userMenuWrap.style.display = "none";
+  if (userDropdown) userDropdown.style.display = "none";
+  document.body.classList.remove("admin-mode");
+  showAdminLauncher(false);
+  closeAdminEditorPanel();
+  setAdminPanelEmpty();
+}
+
+function setLoggedInUI(name, isAdmin = false) {
+  const first = firstNameFromName(name) || "User";
+  if (loginBtn) loginBtn.style.display = "none";
+  if (userMenuWrap) userMenuWrap.style.display = "";
+  if (userFirstName) userFirstName.textContent = first;
+  if (userAvatar) userAvatar.textContent = (first[0] || "U").toUpperCase();
+  document.body.classList.toggle("admin-mode", isAdmin);
+  showAdminLauncher(isAdmin);
+  if (isAdmin) showAdminHint();
+}
+
+function showAdminLauncher(show) {
+  qs("adminEditorLauncher").style.display = show ? "block" : "none";
+}
+
+function showAdminHint() {
+  const toast = qs("adminSectionToast");
+  toast.style.display = "block";
+  setTimeout(() => {
+    toast.style.display = "none";
+  }, 2500);
+}
+
+function toggleAdminEditorPanel() {
+  qs("adminEditorPanel").classList.toggle("open");
+}
+
+function closeAdminEditorPanel() {
+  qs("adminEditorPanel").classList.remove("open");
+}
+
+function setAdminPanelEmpty() {
+  currentAdvancedSectionKey = null;
+  qs("adminPanelTitle").textContent = "Select a section";
+  qs("adminPanelSubtitle").textContent = "Click a highlighted section on the page to edit it.";
+  qs("adminPanelEmpty").style.display = "block";
+  qs("adminEditorFormWrap").style.display = "none";
+  qs("adminEditorFields").innerHTML = "";
+}
+
+function applySinglesToDOM(sectionKey) {
+  const state = advancedState[sectionKey];
+  if (!state || !state.singles) return;
+
+  Object.entries(state.singles).forEach(([id, value]) => {
+    const el = qs(id);
+    if (!el) return;
+
+    if (el.tagName === "IMG") {
+      el.src = value || "";
+    } else {
+      el.textContent = value || "";
+    }
+  });
+}
+
+function renderGuideSteps() {
+  const wrap = qs("guideStepsWrap");
+  const steps = advancedState.reservationSection.guideSteps || [];
+  wrap.innerHTML = steps.map(step => `
+    <div class="info-point">
+      <strong>${step.title || ""}</strong>
+      <span>${step.text || ""}</span>
+    </div>
+  `).join("");
+}
+
+function renderPaymentMethods() {
+  const wrap = qs("paymentOptionsWrap");
+  const methods = advancedState.reservationSection.paymentMethods || [];
+  wrap.innerHTML = methods.map((method, index) => `
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="${escapeHtml(method.value || method.label || "")}" ${index === 0 ? "required" : ""}>
+      <img src="${method.image || ""}" alt="${escapeHtml(method.label || "Payment")}">
+      <span>${method.label || ""}</span>
+    </label>
+  `).join("");
+}
+
+function reservationRoomValue(room) {
+  return `${room.title} - ${room.priceText}/night`;
+}
+
+function renderReservationRooms() {
+  const grid = qs("roomsGrid");
+  const currentSelected = roomSelect.value;
+  const entries = Object.entries(reservationRooms);
+
+  grid.innerHTML = entries.map(([key, room]) => `
+    <div class="room-card" data-room-key="${key}" data-room="${escapeHtml(reservationRoomValue(room))}">
+      <button class="room-card-gear" type="button" onclick="openRoomEditor('${key}')">⚙</button>
+      <img src="${room.image || ""}" alt="${escapeHtml(room.title || "Room")}">
+      <div class="card-content">
+        <h3>${room.title || ""}</h3>
+        <p>${room.desc || ""}</p>
+        <div class="price">${room.priceText || ""}</div>
+        <div class="per-night">per night</div>
+        <ul class="features">
+          ${(room.features || []).map(f => `<li>${f}</li>`).join("")}
+        </ul>
+      </div>
+    </div>
+  `).join("");
+
+  bindRoomCardBehavior();
+
+  roomSelect.innerHTML = `<option value="">Select Room</option>`;
+  entries.forEach(([, room]) => {
+    const option = document.createElement("option");
+    option.value = reservationRoomValue(room);
+    option.textContent = reservationRoomValue(room);
+    roomSelect.appendChild(option);
+  });
+
+  if (currentSelected) {
+    roomSelect.value = currentSelected;
+    highlightSelectedRoomCard(currentSelected);
+  }
+
+  document.querySelectorAll(".room-card").forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.06}s`;
+    card.classList.add("reveal");
+  });
+}
+
+function renderSection(sectionKey) {
+  if (sectionKey === "hero") applySinglesToDOM("hero");
+  if (sectionKey === "roomsHeader") applySinglesToDOM("roomsHeader");
+  if (sectionKey === "reservationSection") {
+    applySinglesToDOM("reservationSection");
+    renderGuideSteps();
+    renderPaymentMethods();
+  }
+  if (sectionKey === "footerSection") applySinglesToDOM("footerSection");
+}
+
+function renderAllAdvancedSections() {
+  renderSection("hero");
+  renderSection("roomsHeader");
+  renderSection("reservationSection");
+  renderSection("footerSection");
+}
+
+function highlightSelectedRoomCard(roomValue) {
+  document.querySelectorAll(".room-card").forEach(card => {
+    card.classList.remove("selected");
+    if (card.dataset.room === roomValue) {
+      card.classList.add("selected");
+    }
+  });
+}
+
+function bindRoomCardBehavior() {
+  const roomCards = document.querySelectorAll(".room-card");
+  roomCards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".room-card-gear")) return;
+      roomCards.forEach(c => c.classList.remove("selected"));
+      card.classList.add("selected");
+      roomSelect.value = card.dataset.room;
+    });
+  });
+}
+
+roomSelect.addEventListener("change", () => {
+  highlightSelectedRoomCard(roomSelect.value);
+});
+
+function buildSingleFieldHTML(sectionKey) {
+  const config = advancedEditorConfig[sectionKey];
+  const state = advancedState[sectionKey];
+
+  return (config.singles || []).map(field => {
+    const value = state.singles?.[field.key] || "";
+
+    if (field.type === "textarea") {
+      return `
+        <div class="editor-field">
+          <label>${field.label}</label>
+          <textarea data-single-key="${field.key}">${escapeHtml(value)}</textarea>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="editor-field">
+        <label>${field.label}</label>
+        <input type="text" data-single-key="${field.key}" value="${escapeHtml(value)}">
+      </div>
+    `;
+  }).join("");
+}
+
+function buildRepeaterHTML(sectionKey) {
+  const config = advancedEditorConfig[sectionKey];
+  if (!config.repeaters) return "";
+
+  return config.repeaters.map(repeater => {
+    const items = advancedState[sectionKey][repeater.key] || [];
+    return `
+      <div class="editor-card">
+        <div class="editor-card-head">
+          <strong>${repeater.itemLabel}s</strong>
+          <button type="button" class="login-btn" onclick="addAdvancedItem('${sectionKey}', '${repeater.key}')">+ Add</button>
+        </div>
+        ${items.map((item, index) => `
+          <div class="editor-card" style="margin-top:10px;">
+            <div class="editor-card-head">
+              <strong>${repeater.itemLabel} ${index + 1}</strong>
+              <button type="button" class="editor-remove-btn" onclick="removeAdvancedItem('${sectionKey}', '${repeater.key}', ${index})">− Remove</button>
+            </div>
+            ${repeater.fields.map(field => {
+              const value = item[field.key] || "";
+              if (field.type === "textarea") {
+                return `
+                  <div class="editor-field">
+                    <label>${field.label}</label>
+                    <textarea data-repeater-item-key="${field.key}" data-repeater-key="${repeater.key}" data-repeater-index="${index}">${escapeHtml(value)}</textarea>
+                  </div>
+                `;
+              }
+              return `
+                <div class="editor-field">
+                  <label>${field.label}</label>
+                  <input type="text" data-repeater-item-key="${field.key}" data-repeater-key="${repeater.key}" data-repeater-index="${index}" value="${escapeHtml(value)}">
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }).join("");
+}
+
+function openAdvancedSection(sectionKey) {
+  const config = advancedEditorConfig[sectionKey];
+  if (!config) return;
+
+  currentAdvancedSectionKey = sectionKey;
+  qs("adminPanelTitle").textContent = config.label;
+  qs("adminPanelSubtitle").textContent = `Editing ${config.label}`;
+  qs("adminPanelEmpty").style.display = "none";
+  qs("adminEditorFormWrap").style.display = "block";
+  qs("adminEditorFields").innerHTML = `${buildSingleFieldHTML(sectionKey)}${buildRepeaterHTML(sectionKey)}`;
+  qs("adminEditorPanel").classList.add("open");
+}
+
+function readSinglesFromPanel() {
+  const inputs = [...qs("adminEditorFields").querySelectorAll("[data-single-key]")];
+  const singles = {};
+  inputs.forEach(input => {
+    singles[input.dataset.singleKey] = input.value.trim();
+  });
+  return singles;
+}
+
+function readRepeatersFromPanel(sectionKey) {
+  const config = advancedEditorConfig[sectionKey];
+  if (!config.repeaters) return;
+
+  config.repeaters.forEach(repeater => {
+    const items = advancedState[sectionKey][repeater.key] || [];
+    const updated = items.map((_, index) => {
+      const item = {};
+      repeater.fields.forEach(field => {
+        const el = qs("adminEditorFields").querySelector(`[data-repeater-key="${repeater.key}"][data-repeater-index="${index}"][data-repeater-item-key="${field.key}"]`);
+        item[field.key] = el ? el.value.trim() : "";
+      });
+      return item;
+    });
+    advancedState[sectionKey][repeater.key] = updated;
+  });
+}
+
+function addAdvancedItem(sectionKey, repeaterKey) {
+  const config = advancedEditorConfig[sectionKey];
+  const repeater = (config.repeaters || []).find(r => r.key === repeaterKey);
+  if (!repeater) return;
+
+  const blankItem = {};
+  repeater.fields.forEach(field => {
+    blankItem[field.key] = "";
+  });
+
+  advancedState[sectionKey][repeaterKey].push(blankItem);
+  openAdvancedSection(sectionKey);
+}
+
+function removeAdvancedItem(sectionKey, repeaterKey, index) {
+  advancedState[sectionKey][repeaterKey].splice(index, 1);
+  openAdvancedSection(sectionKey);
+}
+
+async function saveAdvancedSection() {
+  if (!currentAdvancedSectionKey || !currentUser) {
+    showToast("You must be logged in first.");
+    return;
+  }
+
+  const sectionKey = currentAdvancedSectionKey;
+  advancedState[sectionKey].singles = readSinglesFromPanel();
+  readRepeatersFromPanel(sectionKey);
+
+  try {
+    saveAdvancedEditorState();
+    renderSection(sectionKey);
+    showToast("Section saved successfully.");
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    showToast(err?.message || "Failed to save section.");
+  }
+}
+
+window.toggleAdminEditorPanel = toggleAdminEditorPanel;
+window.closeAdminEditorPanel = closeAdminEditorPanel;
+window.saveAdvancedSection = saveAdvancedSection;
+window.addAdvancedItem = addAdvancedItem;
+window.removeAdvancedItem = removeAdvancedItem;
+
+function openRoomEditor(roomKey) {
+  const room = reservationRooms[roomKey];
+  if (!room) return;
+
+  currentEditingRoomKey = roomKey;
+  qs("roomEditorTitle").textContent = `Edit ${room.title}`;
+  qs("editRoomTitle").value = room.title || "";
+  qs("editRoomPrice").value = room.priceText || "";
+  qs("editRoomPriceNumber").value = room.priceNumber || 0;
+  qs("editRoomImage").value = room.image || "";
+  qs("editRoomDesc").value = room.desc || "";
+  qs("editRoomFeature1").value = room.features?.[0] || "";
+  qs("editRoomFeature2").value = room.features?.[1] || "";
+  qs("editRoomFeature3").value = room.features?.[2] || "";
+  qs("editRoomFeature4").value = room.features?.[3] || "";
+  qs("roomEditorModal").classList.add("active");
+}
+
+function closeRoomEditor() {
+  qs("roomEditorModal").classList.remove("active");
+  currentEditingRoomKey = null;
+}
+
+async function saveRoomEditor() {
+  if (!currentEditingRoomKey || !currentUser) {
+    showToast("You must be logged in first.");
+    return;
+  }
+
+  reservationRooms[currentEditingRoomKey] = {
+    title: qs("editRoomTitle").value.trim(),
+    priceText: qs("editRoomPrice").value.trim(),
+    priceNumber: Number(qs("editRoomPriceNumber").value || 0),
+    image: qs("editRoomImage").value.trim(),
+    desc: qs("editRoomDesc").value.trim(),
+    features: [
+      qs("editRoomFeature1").value.trim(),
+      qs("editRoomFeature2").value.trim(),
+      qs("editRoomFeature3").value.trim(),
+      qs("editRoomFeature4").value.trim()
+    ].filter(Boolean)
+  };
+
+  try {
+    saveReservationRoomsState();
+    renderReservationRooms();
+    closeRoomEditor();
+    showToast("Room updated successfully.");
+  } catch (err) {
+    console.error(err);
+    showToast(err?.message || "Failed to save room.");
+  }
+}
+
+window.openRoomEditor = openRoomEditor;
+window.closeRoomEditor = closeRoomEditor;
+window.saveRoomEditor = saveRoomEditor;
+
+function loadAdvancedEditorData() {
+  advancedState.hero = clone(defaultAdvancedState.hero);
+  advancedState.roomsHeader = clone(defaultAdvancedState.roomsHeader);
+  advancedState.reservationSection = clone(defaultAdvancedState.reservationSection);
+  advancedState.footerSection = clone(defaultAdvancedState.footerSection);
+
+  try {
+    const saved = readStorage(STORAGE_KEYS.reservationAdvancedEditor, null);
+    if (!saved) return;
+
+    Object.keys(saved).forEach(key => {
+      if (advancedState[key]) {
+        advancedState[key] = {
+          ...advancedState[key],
+          ...saved[key],
+          singles: {
+            ...(advancedState[key].singles || {}),
+            ...(saved[key].singles || {})
+          }
+        };
+
+        if (Array.isArray(saved[key].guideSteps)) advancedState[key].guideSteps = saved[key].guideSteps;
+        if (Array.isArray(saved[key].paymentMethods)) advancedState[key].paymentMethods = saved[key].paymentMethods;
+      }
+    });
+  } catch (err) {
+    console.error("Failed to load advanced editor data:", err);
+  }
+}
+
+function loadReservationRooms() {
+  try {
+    const savedRooms = readStorage(STORAGE_KEYS.reservationRooms, null);
+    if (!savedRooms) return;
+    reservationRooms = { ...reservationRooms, ...savedRooms };
+  } catch (err) {
+    console.error("Failed to load reservation rooms:", err);
+  }
+}
+
+if (userMenuBtn && userDropdown) {
+  userMenuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    userDropdown.style.display =
+      (userDropdown.style.display === "none" || !userDropdown.style.display) ? "block" : "none";
+  });
+
+  document.addEventListener("click", () => {
+    userDropdown.style.display = "none";
+  });
+}
+
+if (myAccountBtn) {
+  myAccountBtn.addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    setStoredCurrentUser(null);
+    window.location.href = "index.html";
+  });
+}
+
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
+}
+
+document.addEventListener("click", (e) => {
+  if (!document.body.classList.contains("admin-mode")) return;
+
+  const section = e.target.closest("[data-admin-section]");
+  const clickedInsidePanel = e.target.closest("#adminEditorPanel");
+  const clickedLauncher = e.target.closest("#adminEditorLauncher");
+  const clickedRoomGear = e.target.closest(".room-card-gear");
+  const clickedMenu = e.target.closest("#userMenuWrap");
+  const clickedModal = e.target.closest(".modal");
+
+  if (clickedInsidePanel || clickedLauncher || clickedRoomGear || clickedMenu || clickedModal) return;
+  if (!section) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+  openAdvancedSection(section.dataset.adminSection);
+}, true);
+
+window.addEventListener("click", (e) => {
+  if (e.target === qs("roomEditorModal")) closeRoomEditor();
+});
+
+function initializeStoredAuth() {
+  ensureDefaultAdminAccount();
+  currentUser = normalizeCurrentUser();
+
+  if (!currentUser) {
+    setLoggedOutUI();
+    return;
+  }
+
+  const name = currentUser.displayName || currentUser.name || (currentUser.email ? currentUser.email.split("@")[0] : "User");
+  const isAdmin = (currentUser.role || "").toLowerCase() === "admin" || String(currentUser.email || "").toLowerCase() === "admin@admin.com";
+  currentUser.role = isAdmin ? "admin" : (currentUser.role || "user");
+  setStoredCurrentUser(currentUser);
+  setLoggedInUI(name, isAdmin);
+
+  const fullNameEl = qs("fullName");
+  const emailEl = qs("email");
+  if (fullNameEl && !fullNameEl.value) fullNameEl.value = currentUser.displayName || currentUser.name || name;
+  if (emailEl && !emailEl.value) emailEl.value = currentUser.email || "";
+}
+
+initializeStoredAuth();
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const fullName = qs('fullName').value;
+  const email = qs('email').value;
+  const checkIn = qs('checkIn').value;
+  const checkOut = qs('checkOut').value;
+  const roomType = roomSelect.value;
+
+  if(roomType === "") {
+    alert("Please select a room!");
+    return;
+  }
+
+  const paymentSelected = document.querySelector('input[name="paymentMethod"]:checked');
+  if(!paymentSelected){
+    alert("Please select a payment method before booking.");
+    return;
+  }
+
+  const selectedRoom = Object.values(reservationRooms).find(room => reservationRoomValue(room) === roomType);
+  const price = selectedRoom ? Number(selectedRoom.priceNumber || 0) : 0;
+
+  try {
+    if (!currentUser) {
+      alert("Please login first.");
+      window.location.href = "index.html";
+      return;
+    }
+
+    const reservations = getReservations();
+    const reservation = {
+      id: makeId('reservation'),
+      uid: currentUser.uid || makeId('user'),
+      fullName,
+      email,
+      roomType,
+      checkIn,
+      checkOut,
+      paymentMethod: paymentSelected.value,
+      price,
+      status: 'pending',
+      createdAt: Date.now()
+    };
+
+    reservations.push(reservation);
+    saveReservations(reservations);
+    downloadReservationFile(reservation);
+
+    alert("Reservation successful! Waiting for admin confirmation.");
+    form.reset();
+    document.querySelectorAll('.room-card').forEach(c => c.classList.remove('selected'));
+    roomSelect.value = "";
+  } catch(error) {
+    alert("Error saving reservation: " + error.message);
+  }
+});
+
+(() => {
+  let lastY = window.scrollY;
+  const header = document.querySelector("header");
+
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY;
+
+    if (y > 10) header.classList.add("scrolled");
+    else header.classList.remove("scrolled");
+
+    if (y > lastY && y > 120) header.classList.add("hide");
+    else header.classList.remove("hide");
+
+    lastY = y;
+  });
+})();
+
+(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("reveal");
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll(".fade-section, .reservation-info, form, .room-card").forEach((el) => {
+    observer.observe(el);
+  });
+})();
+
+(() => {
+  function setHeaderVar() {
+    const header = document.querySelector("header");
+    if (!header) return;
+    const h = header.getBoundingClientRect().height || 0;
+    document.documentElement.style.setProperty("--header-h", h + "px");
+  }
+  window.addEventListener("load", setHeaderVar);
+  window.addEventListener("resize", setHeaderVar);
+  setHeaderVar();
+})();
+
+ensureDefaultAdminAccount();
+loadAdvancedEditorData();
+loadReservationRooms();
+renderAllAdvancedSections();
+renderReservationRooms();
+setAdminPanelEmpty();
+</script>
+
+</body>
+</html>
